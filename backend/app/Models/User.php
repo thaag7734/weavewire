@@ -7,6 +7,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Class User
+ *
+ * @property string $username
+ * @property string $email
+ * @property \Carbon\Carbon $email_verified_at
+ * @property string $password
+ * @property string $status
+ */
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -18,9 +27,10 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'username',
         'email',
         'password',
+        'status',
     ];
 
     /**
@@ -44,5 +54,64 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get this User's Posts
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'author_id');
+    }
+
+    /**
+     * Get this User's Reactions
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function reactions()
+    {
+        return $this->hasMany(Reaction::class);
+    }
+
+    /**
+     * Get this User's liked Posts
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|Post[]
+     */
+    public function likedPosts()
+    {
+        return $this
+            ->reactions()
+            ->where('is_like', true)
+            ->whereNotNull('post_id')
+            ->get();
+    }
+
+    /**
+     * Get this User's liked Comments
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|Comment[]
+     */
+    public function likedComments()
+    {
+        return $this
+            ->reactions()
+            ->where('is_like', true)
+            ->whereNotNull('comment_id')
+            ->get();
+    }
+
+
+    /**
+     * Get this User's Comments
+     *
+     * @return \Illuminate\Database\Eloquent\Collection|Comment[]
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
     }
 }
