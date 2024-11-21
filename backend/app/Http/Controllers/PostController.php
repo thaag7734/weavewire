@@ -39,11 +39,11 @@ class PostController extends Controller
             'image' => 'required|mimes:apng,avif,gif,jpeg,png,webp',
         ]);
 
-        if (!$request->user()) {
-            return response()->json([
-                'message' => 'You must be logged in to access this endpoint'
-            ]);
-        }
+        /*if (!$request->user()) {*/
+        /*    return response()->json([*/
+        /*        'message' => 'You must be logged in to access this endpoint'*/
+        /*    ]);*/
+        /*}*/
 
         $path = $request->file('image')->store('images', 's3');
         $imageFilename = explode('/', $path)[1];
@@ -70,11 +70,11 @@ class PostController extends Controller
 
         /** @var \App\Models\User $user */
         $user = $request->user();
-        if (!$user) {
-            return response()->json([
-                'message' => 'You must be logged in to access this endpoint',
-            ], 401);
-        }
+        /*if (!$user) {*/
+        /*    return response()->json([*/
+        /*        'message' => 'You must be logged in to access this endpoint',*/
+        /*    ], 401);*/
+        /*}*/
 
         /** @var \App\Models\Post $Post */
         $post = Post::query()->whereKey($postId)->first();
@@ -115,11 +115,11 @@ class PostController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
-        if (!$user) {
-            return response()->json([
-                'message' => 'You must be logged in to access this endpoint'
-            ], 401);
-        }
+        /*if (!$user) {*/
+        /*    return response()->json([*/
+        /*        'message' => 'You must be logged in to access this endpoint'*/
+        /*    ], 401);*/
+        /*}*/
 
         /** @var \App\Models\Post $post */
         $post = Post::query()->whereKey($postId)->first();
