@@ -6,6 +6,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use App\Models\Reaction;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Sequence;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -35,9 +36,13 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         $posts = Post::factory()
-            ->count(30)
-            ->withUser($users->random())
+            ->count(100)
+            ->state(fn() => [
+                'author_id' => $users->random(),
+            ])
             ->create();
+
+        $posts->concat(Post::factory()->count(10)->withUser($sysUser)->create());
 
         foreach ($posts as $post) {
             Reaction::factory()

@@ -4,6 +4,11 @@ import viteLogo from "/vite.svg";
 import "./App.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import SplashPage from "./components/SplashPage/SplashPage";
+import { csrfFetch } from "./util/csrfFetch";
+
+if (import.meta.env.MODE !== "production") {
+  (window as any).csrfFetch = csrfFetch;
+}
 
 function App() {
   function Layout() {

@@ -20,7 +20,7 @@ class PostFactory extends Factory
     {
         return [
             'author_id' => User::factory(),
-            'image_id' => Str::random(16), // TODO replace this with real seeds
+            'image_file' => Str::random(32) . '.png', // TODO replace this with real seeds
             'caption' => fake()->realText(512),
         ];
     }

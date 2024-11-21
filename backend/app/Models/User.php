@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 /**
  * Class User
  *
+ * @property int $id
  * @property string $username
  * @property string $email
  * @property \Carbon\Carbon $email_verified_at

@@ -18,7 +18,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->references('id')
                 ->on('users');
-            $table->char('image_id', 16);
+            $table->text('image_file');
             $table->string('caption', 512);
             $table->timestamps();
         });
