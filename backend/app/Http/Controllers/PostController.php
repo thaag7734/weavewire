@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 
@@ -154,12 +155,35 @@ class PostController extends Controller
     }
 
     /**
+     * Get all posts (paginated), with the most recent being first
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAll(Request $request)
+    {
+        $limit = 15; // this should maybe be customizable
+        $offset = intval($request->query('p')) * $limit - 1;
+        $offset = $offset < 0 ? 0 : $offset;
+
+        $posts = DB::table('posts')
+            ->orderBy('id', 'asc')
+            ->skip($offset)
+            ->take($limit)
+            ->get();
+
+        return response()->json(['posts' => $posts], 200);
+    }
+
+    /**
      * Get all of a user's posts
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function showByUser(int $userId)
     {
+        // it's arguable whether this should live here,
+        // but making a UserPostController is definitely overkill
+
         /** @var User $user */
         $user = User::query()->whereKey($userId)->first();
 

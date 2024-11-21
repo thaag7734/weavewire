@@ -17,6 +17,8 @@ Route::prefix('/post')->group(function () {
     Route::get('/{postId}', [PostController::class, 'show'])
         ->where('postId', '[0-9]+');
 
+    Route::get('/all', [PostController::class, 'showAll']);
+
     Route::middleware(['auth:sanctum'])->put('/{postId}', [PostController::class, 'update'])
         ->where('postId', '[0-9]+');
 
