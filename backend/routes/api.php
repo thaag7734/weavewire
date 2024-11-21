@@ -4,10 +4,13 @@ use App\Http\Controllers\PostController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::prefix('/user')->middleware(['auth:sanctum'])->group(function () {
-    Route::get('/', function (Request $request) {
+Route::prefix('/user')->group(function () {
+    Route::middleware(['auth:sanctum'])->get('/', function (Request $request) {
         return $request->user();
     });
+
+    Route::get('/{userId}/posts', [PostController::class, 'showByUser'])
+        ->where('userId', '[0-9]+');
 });
 
 Route::prefix('/post')->group(function () {

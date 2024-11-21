@@ -152,4 +152,23 @@ class PostController extends Controller
             ], 500);
         }
     }
+
+    /**
+     * Get all of a user's posts
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showByUser(int $userId)
+    {
+        /** @var User $user */
+        $user = User::query()->whereKey($userId)->first();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'User not found',
+            ], 404);
+        }
+
+        return response()->json(['posts' => $user->posts], 200);
+    }
 }
