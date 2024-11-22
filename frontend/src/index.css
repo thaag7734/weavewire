@@ -3,66 +3,117 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: dark light;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --c-black: #040404;
+  --c-dgray: #090909;
+  --c-gray: #151515;
+  --c-lgray: #d6d6d6;
+  /*--c-a-purp: #CA3CFF;*/
+  /*--c-a-blue: #bcf8ec;*/
+  --c-a-purp: #CA3CFF;
+  --c-a-blue: #62EAF9;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
 body {
+  padding: 0;
   margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background-color: var(--c-black);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+.card {
+  border-radius: 25px 5px 25px 5px;
+  background: var(--c-gray);
+  padding: 15px;
+  position: relative;
+  overflow: hidden;
+  padding: 15px 25px;
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+  &::after,
+  &::before {
+    content: "";
+    position: absolute;
+    width: calc(100% - 10px);
+    height: calc(100% - 10px);
+    left: 5px;
+    top: 5px;
+    border-radius: inherit;
+    border-left: 2px solid var(--c-a-purp);
+    border-top: 2px solid var(--c-a-purp);
+    pointer-events: none;
+    clip-path: inset(-10px calc(100% - 75px) calc(100% - 35px) -10px);
   }
-  a:hover {
-    color: #747bff;
+
+  &::before {
+    filter: blur(5px);
   }
-  button {
-    background-color: #f9f9f9;
+
+  &::after {
+    background: transparent;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
+    margin: 0;
+  }
+
+  div.input {
+    border-radius: 10px 2px 10px 2px;
+    position: relative;
+    width: 70%;
+
+    &::after {
+      content: "";
+      border-radius: inherit;
+      border-top: 1px solid var(--c-a-blue);
+      border-left: 1px solid var(--c-a-blue);
+      position: absolute;
+      width: calc(100% - 2px);
+      height: calc(100% - 2px);
+      left: 2px;
+      top: 2px;
+      clip-path: inset(-10px 90% 35% -10px);
+      transition: clip-path 0.5s ease;
+      pointer-events: none;
+      filter: blur(0.5px);
+    }
+
+    &:focus-within::after {
+      clip-path: inset(0 1px 1px 0);
+    }
+
+    >input {
+      border: none;
+      border-radius: inherit;
+      padding: 10px;
+      width: 100%;
+
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+
+  label {
+    width: fit-content;
+  }
+
+  input {
+    background-color: var(--c-dgray);
   }
 }

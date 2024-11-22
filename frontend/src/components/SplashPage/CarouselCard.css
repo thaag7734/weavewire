@@ -1,0 +1,20 @@
+  .carousel-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    /* TODO this needs a media query */
+    min-width: 400px;
+    max-width: 400px;
+    margin-right: 5vw;
+
+    >.carousel-card-img {
+      min-height: 70%;
+    }
+
+    >.carousel-card-caption {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }

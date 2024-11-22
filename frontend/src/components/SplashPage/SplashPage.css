@@ -1,0 +1,72 @@
+@keyframes carousel {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.splash {
+  height: 100vh;
+  width: 100vw;
+
+  >.carousel-group {
+    display: flex;
+    height: 50%;
+    width: 100vw;
+    overflow: hidden;
+
+    >.carousel {
+      padding: 10px 0;
+      width: fit-content;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+
+      animation: carousel 60s linear infinite;
+    }
+  }
+
+  >.splash-cta-group {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 20px;
+
+    >.splash-login {
+      width: 40%;
+      display: flex;
+      flex-direction: column;
+
+      >h2 {
+        margin-bottom: 20px;
+        margin-left: 20px;
+        font-size: 2rem;
+      }
+
+      >form {
+        display: flex;
+        flex-direction: column;
+
+        >.input-group {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+
+          >.input {
+            margin: 10px 0px 10px 5px;
+          }
+        }
+
+        >button {
+          margin-top: 20px;
+          width: 50%;
+          align-self: flex-end;
+        }
+      }
+    }
+  }
+}
