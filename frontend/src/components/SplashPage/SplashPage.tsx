@@ -1,12 +1,12 @@
 import React, { type FormEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/util";
-import { getRecentPosts, selectAllPosts } from "../../redux/reducers/posts";
+import { getRecentPosts, selectOrderedPosts } from "../../redux/reducers/posts";
 import CarouselCard from "./CarouselCard";
 import "./SplashPage.css";
 import { login } from "../../redux/reducers/session";
 
 export default function SplashPage() {
-  const posts = useAppSelector(state => selectAllPosts(state));
+  const posts = useAppSelector(state => selectOrderedPosts(state));
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function SplashPage() {
   const handleAnimEnd = (e: React.AnimationEvent) => {
     const target = e.currentTarget;
 
-    e.currentTarget.parentElement?.appendChild(target)
+    e.currentTarget.parentElement?.appendChild(target);
   }
 
   return (

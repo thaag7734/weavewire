@@ -64,19 +64,27 @@ export const selectPostById = createSelector(
     (state: RootState) => state.posts,
     (_state: RootState, postId: number) => postId,
   ],
-  (posts: PostsState, postId: number) => posts[postId],
+  (ps: PostsState, postId: number) => ps.posts[postId],
 );
 
 export const selectAllPosts = createSelector(
   [(state: RootState) => state.posts],
-  (posts: PostsState) => Object.values(posts)
-)
+  (ps: PostsState) => Object.values(ps.posts)
+);
+
+export const selectOrderedPosts = createSelector(
+  [(state: RootState) => state.posts],
+  (ps: PostsState) => ps.order.map(id => ps.posts[id]),
+);
 
 export interface PostsState {
-  [key: string]: Post;
+  posts: {
+    [key: string]: Post;
+  },
+  order: number[];
 }
 
-const initialState: PostsState = {};
+const initialState: PostsState = { posts: {}, order: [] };
 
 export const postsSlice = createSlice({
   name: "posts",
@@ -84,14 +92,17 @@ export const postsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getPost.fulfilled, (state, action: PayloadAction<Post>) => {
-      state[action.payload.id] = action.payload;
+      state.posts[action.payload.id] = action.payload;
     });
     builder.addMatcher(
       (action) => isAnyOf(getRecentPosts.fulfilled)(action),
       (state, action: PayloadAction<{ posts: Post[] }>) => {
-        for (const post of action.payload.posts) {
-          state[post.id] = post;
-        }
+        action.payload.posts.forEach((post) => {
+          if (state.order.includes(post.id)) return;
+
+          state.posts[post.id] = post;
+          state.order.push(post.id);
+        });
       },
     );
   },

@@ -5,6 +5,7 @@ import "./App.css";
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import SplashPage from "./components/SplashPage/SplashPage";
 import { csrfFetch } from "./util/csrfFetch";
+import Feed from "./components/Feed/Feed";
 
 if (import.meta.env.MODE !== "production") {
   (window as any).csrfFetch = csrfFetch;
@@ -24,6 +25,10 @@ function App() {
           index: true,
           element: <SplashPage />,
         },
+        {
+          path: "/feed",
+          element: <Feed />,
+        }
       ],
     },
   ]);
