@@ -6,7 +6,7 @@ import {
 } from "@reduxjs/toolkit";
 import type { Post } from "../../types/Models";
 import { createAppAsyncThunk } from "../util";
-import { RootState } from "../store";
+import type { RootState } from "../store";
 
 const PREFIX = "posts";
 

@@ -9,7 +9,20 @@
     margin-right: 5vw;
 
     >.carousel-card-img {
-      min-height: 70%;
+      min-height: 80%;
+      max-height: 80%;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+
+      >img {
+        height: 100%;
+        border-radius: inherit;
+        aspect-ratio: initial;
+        object-fit: cover;
+      }
     }
 
     >.carousel-card-caption {

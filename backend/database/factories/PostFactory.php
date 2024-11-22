@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -18,9 +19,12 @@ class PostFactory extends Factory
      */
     public function definition(): array
     {
+        $files = Storage::disk('s3')->files('images');
+        $idx = array_rand($files);
+
         return [
             'author_id' => User::factory(),
-            'image_file' => Str::random(32) . '.png', // TODO replace this with real seeds
+            'image_file' => explode('/', $files[$idx])[1],
             'caption' => fake()->realText(512),
         ];
     }

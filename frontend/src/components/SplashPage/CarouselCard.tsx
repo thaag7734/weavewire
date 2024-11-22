@@ -11,7 +11,7 @@ export default function CarouselCard({ postId }: { postId: number }) {
     <div className="carousel-card card" ref={cardRef}>
       <div className="carousel-card-img">
         {post
-          ? `https://static.weavewire.tylerhaag.dev/images/${post.image_file}`
+          ? <img src={`https://static.weavewire.tylerhaag.dev/images/${post.image_file}`} />
           : null}
       </div>
       <p className="carousel-card-caption">{post?.caption}</p>

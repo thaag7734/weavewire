@@ -1,9 +1,9 @@
 import React, { type FormEvent, useEffect, useState } from "react";
-import { csrfFetch } from "../../util/csrfFetch";
 import { useAppDispatch, useAppSelector } from "../../redux/util";
 import { getRecentPosts, selectAllPosts } from "../../redux/reducers/posts";
 import CarouselCard from "./CarouselCard";
 import "./SplashPage.css";
+import { login } from "../../redux/reducers/session";
 
 export default function SplashPage() {
   const posts = useAppSelector(state => selectAllPosts(state));
@@ -18,14 +18,7 @@ export default function SplashPage() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
-    await csrfFetch("/auth/login", {
-      method: "POST",
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-      headers: { "Content-Type": "application/json" },
-    });
+    dispatch(login({ email, password }))
   };
 
   const handleAnimEnd = (e: React.AnimationEvent) => {
