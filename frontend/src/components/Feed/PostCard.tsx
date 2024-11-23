@@ -1,22 +1,36 @@
 import { forwardRef, useEffect, useState } from "react";
 import { selectPostById } from "../../redux/reducers/posts"
-import { useAppSelector } from "../../redux/util"
+import { useAppDispatch, useAppSelector } from "../../redux/util"
 import "./PostCard.css"
+import { getUserDetails, selectUserById } from "../../redux/reducers/users";
+import { AVATAR_URL } from "../../appConfig";
 
 const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
-  ({ postId }, ref) => {
+  ({ postId }: { postId: number }, ref) => {
     const post = useAppSelector(state => selectPostById(state, postId));
+    const author = useAppSelector(state => selectUserById(state, post.author_id))
     const [loaded, setLoaded] = useState<boolean>(false);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
       if (loaded || !post) return;
 
-      setLoaded(true);
-    }, [post])
+      if (!author) {
+        dispatch(getUserDetails(post.author_id)).then(() => setLoaded(true));
+      } else {
+        setLoaded(true);
+      }
+    }, [post, author])
 
     return (
       <div ref={ref} className="post-scroll-container">
         <article className="card post-card">
+          <div className="op-credit">
+            <div className="op-pfp pfp">
+              <img src={`${AVATAR_URL}/${author?.avatar || "nopfp.png"}`} />
+            </div>
+            <h4>{author?.username}</h4>
+          </div>
           <button className="post-card-img">
             {
               post

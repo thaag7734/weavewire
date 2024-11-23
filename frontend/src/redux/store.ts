@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { createLogger } from "redux-logger";
 import { sessionSlice } from "./reducers/session";
 import { postsSlice } from "./reducers/posts";
+import { usersSlice } from "./reducers/users";
 
 const isProd = import.meta.env.MODE === "production";
 
@@ -14,6 +15,7 @@ export const store = configureStore({
   reducer: {
     session: sessionSlice.reducer,
     posts: postsSlice.reducer,
+    users: usersSlice.reducer,
   },
 });
 

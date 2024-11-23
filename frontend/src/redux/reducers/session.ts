@@ -3,7 +3,6 @@ import type { User } from "../../types/Models";
 import { csrfFetch } from "../../util/csrfFetch";
 import { createAppAsyncThunk } from "../util";
 import type { LoginForm } from "../../types/Forms";
-import { ApiMessage } from "../../types/Api";
 
 const PREFIX = "session";
 
@@ -54,7 +53,7 @@ export const restoreUser = createAppAsyncThunk(
 
     return fulfillWithValue(await res.json());
   }
-)
+);
 
 export interface SessionState {
   user: User | null;

@@ -78,9 +78,7 @@ export const selectOrderedPosts = createSelector(
 );
 
 export interface PostsState {
-  posts: {
-    [key: string]: Post;
-  },
+  posts: Record<number, Post>;
   order: number[];
 }
 

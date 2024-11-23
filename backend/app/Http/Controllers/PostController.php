@@ -173,26 +173,4 @@ class PostController extends Controller
 
         return response()->json(['posts' => $posts], 200);
     }
-
-    /**
-     * Get all of a user's posts
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function showByUser(int $userId)
-    {
-        // it's arguable whether this should live here,
-        // but making a UserPostController is definitely overkill
-
-        /** @var User $user */
-        $user = User::query()->whereKey($userId)->first();
-
-        if (!$user) {
-            return response()->json([
-                'message' => 'User not found',
-            ], 404);
-        }
-
-        return response()->json(['posts' => $user->posts], 200);
-    }
 }

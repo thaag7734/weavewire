@@ -14,6 +14,20 @@
     justify-content: space-between;
     height: 100%;
 
+    >.op-credit {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
+
+      >.pfp {
+        position: relative;
+        left: -10px;
+      }
+    }
+
     >.post-card-img {
       padding: 0;
       min-width: 100%;

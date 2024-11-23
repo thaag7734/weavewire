@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -9,7 +10,10 @@ Route::prefix('/user')->group(function () {
         return $request->user();
     });
 
-    Route::get('/{userId}/posts', [PostController::class, 'showByUser'])
+    Route::get('/{userId}', [UserController::class, 'show'])
+        ->where('userId', '[0-9]+');
+
+    Route::get('/{userId}/posts', [UserController::class, 'showPosts'])
         ->where('userId', '[0-9]+');
 });
 

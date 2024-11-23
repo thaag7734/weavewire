@@ -16,6 +16,7 @@ use Illuminate\Notifications\Notifiable;
  * @property \Carbon\Carbon $email_verified_at
  * @property string $password
  * @property string $status
+ * @property string $avatar
  */
 class User extends Authenticatable
 {
