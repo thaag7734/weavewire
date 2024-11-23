@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\File;
 
 class PostController extends Controller
 {
@@ -48,12 +45,6 @@ class PostController extends Controller
             'caption' => 'required|string|max:512',
             'image' => 'required|mimes:apng,avif,gif,jpeg,png,webp',
         ]);
-
-        /*if (!$request->user()) {*/
-        /*    return response()->json([*/
-        /*        'message' => 'You must be logged in to access this endpoint'*/
-        /*    ]);*/
-        /*}*/
 
         $path = $request->file('image')->store('images', 's3');
         $imageFilename = explode('/', $path)[1];
@@ -96,7 +87,7 @@ class PostController extends Controller
 
         if ($post->author_id != $user->id) {
             return response()->json([
-                'message' => 'You are not authorized to update this post'
+                'message' => 'You are not allowed to update this post'
             ], 403);
         }
 
@@ -125,11 +116,6 @@ class PostController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
-        /*if (!$user) {*/
-        /*    return response()->json([*/
-        /*        'message' => 'You must be logged in to access this endpoint'*/
-        /*    ], 401);*/
-        /*}*/
 
         /** @var \App\Models\Post $post */
         $post = Post::query()->whereKey($postId)->first();
@@ -141,7 +127,7 @@ class PostController extends Controller
 
         if ($user->id != $post->author_id) {
             return response()->json([
-                'message' => 'You are not authorized to delete this post'
+                'message' => 'You are not allowed to delete this post'
             ], 403);
         }
 
