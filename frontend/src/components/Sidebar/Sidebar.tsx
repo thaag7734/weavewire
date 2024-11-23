@@ -21,6 +21,12 @@ export default function Sidebar() {
         </div>
       </div>
       <img className="hr" src={`${ASSET_URL}/hr.svg`} />
+      <nav>
+        <button onClick={() => alert("Not Implemented")}>Popular</button>
+        <button onClick={() => alert("Not Implemented")}>All Posts</button>
+        <button onClick={() => alert("Not Implemented")}>Subscriptions</button>
+        <button onClick={() => alert("Not Implemented")}>Chat</button>
+      </nav>
     </div>
   )
 }

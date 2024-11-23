@@ -1,7 +1,8 @@
+/* TODO many things in this file need several media queries */
+
 .sidebar {
   background-color: var(--c-dgray);
   box-shadow: 0px 0px 15px 0 var(--c-gray);
-  /* TODO it is absolutely necessary that this gets a mq */
   width: 300px;
   height: 100vh;
   position: sticky;
@@ -35,8 +36,6 @@
       height: inherit;
 
       >button.username {
-        white-space: nowrap;
-        text-wrap: nowrap;
         position: relative;
         margin-top: 10px;
         left: -8px;
@@ -49,6 +48,20 @@
         max-width: 100%;
         text-overflow: ellipsis;
       }
+    }
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+
+    >button {
+      margin-bottom: 10px;
+      height: 3rem;
+      font-family: var(--font-heading);
+      font-size: 2rem;
     }
   }
 }
