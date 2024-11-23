@@ -14,7 +14,7 @@ export default function Sidebar() {
         <div className="summary-text">
           {user && (
             <>
-              <h4>{user.username}</h4>
+              <button className="username">{user.username}</button>
               <span className="summary-status">{user.status}</span>
             </>
           )}

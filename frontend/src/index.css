@@ -38,6 +38,9 @@
   --c-a-purp: #CA3CFF;
   --c-a-blue: #62EAF9;
 
+  --font-heading: Computerfont, system-ui, sans-serif;
+  --font-main: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
+
   color: var(--c-lgray);
 }
 
