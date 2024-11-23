@@ -1,8 +1,13 @@
-import { createSelector, createSlice, isAnyOf, type PayloadAction } from "@reduxjs/toolkit";
+import {
+  createSelector,
+  createSlice,
+  isAnyOf,
+  type PayloadAction,
+} from "@reduxjs/toolkit";
 import type { User } from "../../types/Models";
 import { csrfFetch } from "../../util/csrfFetch";
 import { createAppAsyncThunk } from "../util";
-import { RootState } from "../store";
+import type { RootState } from "../store";
 
 const PREFIX = "session";
 
@@ -24,9 +29,12 @@ export const getUserDetails = createAppAsyncThunk(
 );
 
 export const selectUserById = createSelector(
-  [(state: RootState) => state.users, (_state: RootState, userId: number) => userId],
+  [
+    (state: RootState) => state.users,
+    (_state: RootState, userId: number) => userId,
+  ],
   (us: UsersState, userId: number) => us.users[userId],
-)
+);
 
 export interface UsersState {
   users: Record<string, User>;
@@ -43,6 +51,7 @@ export const usersSlice = createSlice({
       getUserDetails.fulfilled,
       (state: UsersState, action: PayloadAction<User>) => {
         state.users[action.payload.id] = action.payload;
-      });
+      },
+    );
   },
 });
