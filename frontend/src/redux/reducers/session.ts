@@ -9,6 +9,7 @@ const PREFIX = "session";
 
 const LOGIN = `${PREFIX}/login`;
 const LOGOUT = `${PREFIX}/logout`;
+const RESTORE_USER = `${PREFIX}/restoreUser`;
 
 export const login = createAppAsyncThunk(
   LOGIN,
@@ -40,6 +41,19 @@ export const logout = createAppAsyncThunk(
 
     return fulfillWithValue({ 'message': `Logged out user ${currentUser.username}` });
   }
+);
+
+export const restoreUser = createAppAsyncThunk(
+  RESTORE_USER,
+  async (_: never, { fulfillWithValue, rejectWithValue }) => {
+    const res = await csrfFetch("/api/user");
+
+    if (!res.ok) {
+      return rejectWithValue({ "message": `Failed to restore user: HTTP ${res.status}` });
+    }
+
+    return fulfillWithValue(await res.json());
+  }
 )
 
 export interface SessionState {
@@ -57,7 +71,7 @@ export const sessionSlice = createSlice({
       state.user = null;
     });
     builder.addMatcher(
-      (action) => isAnyOf(login.fulfilled)(action),
+      (action) => isAnyOf(login.fulfilled, restoreUser.fulfilled)(action),
       (state, action: PayloadAction<User>) => {
         state.user = action.payload;
       },

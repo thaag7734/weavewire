@@ -8,6 +8,7 @@ export interface User extends Model {
   username: string;
   email: string;
   password?: string;
+  status: string;
 }
 
 export interface Post extends Model {

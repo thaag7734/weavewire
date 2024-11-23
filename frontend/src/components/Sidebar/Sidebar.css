@@ -1,0 +1,50 @@
+.sidebar {
+  background-color: var(--c-dgray);
+  box-shadow: 0px 0px 15px 0 var(--c-gray);
+  /* TODO it is absolutely necessary that this gets a mq */
+  width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  >.user-summary {
+    height: 100px;
+    display: grid;
+    grid-template-columns: 100px 200px;
+    align-items: center;
+
+    >.summary-pfp {
+      margin: 0 20px 0 10px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        filter: blur(5px);
+      }
+    }
+
+    >.summary-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      height: inherit;
+
+      >h4 {
+        white-space: nowrap;
+        text-wrap: nowrap;
+        position: relative;
+        left: -10px;
+      }
+
+      .summary-status {
+        display: flex;
+        overflow: hidden;
+        max-height: 2lh;
+        max-width: 100%;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
