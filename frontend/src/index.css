@@ -52,6 +52,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: var(--c-black);
+  scroll-snap-type: y mandatory;
 }
 
 .card {
@@ -62,8 +63,8 @@ body {
   overflow: hidden;
   padding: 15px 25px;
 
-  &::after,
-  &::before {
+  &::before,
+  &::after {
     content: "";
     position: absolute;
     width: calc(100% - 10px);
