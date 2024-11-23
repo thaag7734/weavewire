@@ -1,7 +1,6 @@
 import { useAppSelector } from "../../redux/util";
 import "./Sidebar.css";
-
-const HR_IMG_URL = "https://static.weavewire.tylerhaag.dev/assets/hr.svg";
+import { ASSET_URL, AVATAR_URL } from "../../appConfig";
 
 export default function Sidebar() {
   const user = useAppSelector(state => state.session.user);
@@ -10,7 +9,7 @@ export default function Sidebar() {
     <div className="sidebar">
       <div className="user-summary">
         <div className="summary-pfp pfp">
-          {user && user.profile_image && <img className="pfp" src={user.profile_image} />}
+          {user && <img className="pfp" src={`${AVATAR_URL}/${user.avatar || "nopfp.png"}`} />}
         </div>
         <div className="summary-text">
           {user && (
@@ -21,7 +20,7 @@ export default function Sidebar() {
           )}
         </div>
       </div>
-      <img className="hr" src={HR_IMG_URL} />
+      <img className="hr" src={`${ASSET_URL}/hr.svg`} />
     </div>
   )
 }

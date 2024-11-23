@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 /**
@@ -23,6 +24,9 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $avatars = Storage::disk('s3')->files('avatars');
+        $idx = array_rand($avatars);
+
         return [
             'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->safeEmail(),
@@ -30,6 +34,7 @@ class UserFactory extends Factory
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
             'status' => fake()->realText(32),
+            'avatar' => explode('/', $avatars[$idx])[1],
         ];
     }
 
