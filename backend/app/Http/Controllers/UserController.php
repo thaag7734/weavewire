@@ -21,12 +21,7 @@ class UserController extends Controller
             return response()->json(['message' => 'User not found']);
         }
 
-        return response()->json([
-            'id' => $user->id,
-            'username' => $user->username,
-            'avatar' => $user->avatar,
-            'status' => $user->status,
-        ]);
+        return response()->json($user->publicDetails());
     }
 
     /**

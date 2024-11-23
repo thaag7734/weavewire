@@ -19,13 +19,22 @@ class PostController extends Controller
      */
     public function show(int $postId)
     {
-        $post = Post::find($postId);
+        $post = Post::with('author')->find($postId);
 
         if (!$post) {
             return response()->json(['error' => 'Post not found'], 404);
         }
 
-        return response()->json($post);
+        // TODO there is definitely a better way to do this but it's 5:30am
+        // and i am going to bed!!!
+        $postArr = $post->toArray();
+        $author = $postArr['author'];
+
+        unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+        $postArr['author'] = $author;
+
+
+        return response()->json($postArr);
     }
 
     /**
@@ -71,11 +80,11 @@ class PostController extends Controller
 
         /** @var \App\Models\User $user */
         $user = $request->user();
-        /*if (!$user) {*/
-        /*    return response()->json([*/
-        /*        'message' => 'You must be logged in to access this endpoint',*/
-        /*    ], 401);*/
-        /*}*/
+        if (!$user) {
+            return response()->json([
+                'message' => 'You must be logged in to access this endpoint',
+            ], 401);
+        }
 
         /** @var \App\Models\Post $Post */
         $post = Post::query()->whereKey($postId)->first();
@@ -165,12 +174,24 @@ class PostController extends Controller
         $offset = intval($request->query('p')) * $limit - 1;
         $offset = $offset < 0 ? 0 : $offset;
 
-        $posts = DB::table('posts')
+        $posts = Post::with('author')
             ->orderBy('id', 'asc')
             ->skip($offset)
             ->take($limit)
             ->get();
 
-        return response()->json(['posts' => $posts], 200);
+        // TODO there is definitely a better way to do this but it's 5:30am
+        // and i am going to bed!!!
+        $safePosts = $posts->map(function (Post $post) {
+            $postArr = $post->toArray();
+            $author = $postArr['author'];
+
+            unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+            $postArr['author'] = $author;
+
+            return $postArr;
+        });
+
+        return response()->json(['posts' => $safePosts], 200);
     }
 }

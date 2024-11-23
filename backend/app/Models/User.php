@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,6 +57,23 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get this User's id, username, status, created_at, and avatar
+     *
+     * @return array<string, mixed>
+     */
+    public function publicDetails()
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'avatar' => $this->avatar,
+        ];
+    }
+
 
     /**
      * Get this User's Posts
