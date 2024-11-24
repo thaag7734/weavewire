@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Comment;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +20,7 @@ class PostController extends Controller
         $post = Post::with('author')->find($postId);
 
         if (!$post) {
-            return response()->json(['error' => 'Post not found'], 404);
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         // TODO there is definitely a better way to do this but it's 5:30am
@@ -179,5 +180,34 @@ class PostController extends Controller
         });
 
         return response()->json(['posts' => $safePosts], 200);
+    }
+
+    /**
+     * Show the comments for a specific post
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showComments(int $postId)
+    {
+        $post = Post::find($postId);
+
+        if (!$post) {
+            return response()->json(['message' => 'Post not found']);
+        }
+
+        $comments = $post->comments()->get();
+
+        // TODO seriously this needs to be turned into a scope or something
+        $safeComments = $comments->map(function (Comment $comment) {
+            $commentArr = $comment->toArray();
+            $author = $commentArr['author'];
+
+            unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+            $commentArr['author'] = $author;
+
+            return $commentArr;
+        });
+
+        return response()->json(['comments' => $safeComments]);
     }
 }

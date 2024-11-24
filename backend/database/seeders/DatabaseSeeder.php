@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             ->create();
 
         $posts->concat(Post::factory()->count(10)->withUser($sysUser)->create());
+        $posts->concat(Post::factory()->count(10)->withUser($demoUser)->create());
 
         foreach ($posts as $post) {
             Reaction::factory()
@@ -52,13 +53,24 @@ class DatabaseSeeder extends Seeder
                     'user_id' => $users->random()->id,
                 ])
                 ->create();
-            Comment::factory()
+            $comments = Comment::factory()
                 ->count(random_int(3, 30))
                 ->state(fn() => [
                     'post_id' => $post->id,
                     'author_id' => $users->random()->id,
                 ])
                 ->create();
+
+            foreach ($comments as $comment) {
+                Comment::factory()
+                    ->count(random_int(0, 5))
+                    ->state(fn() => [
+                        'post_id' => $post->id,
+                        'author_id' => $users->random()->id,
+                        'reply_path' => $comment->reply_path
+                    ])
+                    ->create();
+            }
         }
     }
 }

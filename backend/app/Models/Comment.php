@@ -31,9 +31,13 @@ class Comment extends Model
     protected static function booted()
     {
         static::created(function (Comment $comment) {
-            if (is_null($comment->reply_path)) {
+            if (!$comment->reply_path) {
                 $comment->reply_path = strval($comment->id);
+            } else {
+                $comment->reply_path .= ':' . $comment->id;
             }
+
+            $comment->save();
         });
     }
 
@@ -44,10 +48,16 @@ class Comment extends Model
 
     public function replies()
     {
-        return Comment::where(
-            'reply_path',
-            'REGEXP',
-            '^' . $this->reply_path . ':[0-9]+'
-        )->get();
+        return Comment::with('author')
+            ->where(
+                'reply_path',
+                '~',
+                '^' . $this->reply_path . ':[0-9:]+'
+            );
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
     }
 }
