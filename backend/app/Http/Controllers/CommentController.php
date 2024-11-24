@@ -30,13 +30,64 @@ class CommentController extends Controller
     }
 
     /**
+     * Build the reply tree for a particular comment,
+     * returning only the replies sorted by creation time (desc)
+     */
+    private function buildReplyTree(array $rootComment, array $replies): array
+    {
+        // set up a map to keep track of comments by their id
+        $root = $rootComment;
+        $root['children'] = [];
+        $map = [$root['id'] => &$root];
+
+        foreach ($replies as &$reply) {
+            $reply['children'] = [];
+            $map[$reply['id']] = &$reply;
+        }
+        unset($reply);
+
+        // build the tree
+        foreach ($replies as &$reply) {
+            $pathParts = explode(':', $reply['reply_path']);
+
+            $parentId = $pathParts[count($pathParts) - 2];
+
+            if (isset($map[$parentId])) {
+                $map[$parentId]['children'][] = &$reply;
+            }
+        }
+        unset($reply);
+
+        $this->sortReplyTree($root['children']);
+
+        return $root['children'];
+    }
+
+    private function sortReplyTree(array &$tree): void
+    {
+        usort(
+            $tree,
+            fn($a, $b) => $a['created_at'] <=> strtotime($b['created_at'])
+        );
+
+        foreach ($tree as $reply) {
+            if (!empty($reply['children'])) {
+                $this->sortReplyTree($reply['children']);
+            }
+        }
+    }
+
+    /**
      * Show the full reply tree for a comment
+     *
+     * this route seems inefficient and i have no clue how it would
+     * perform at scale. probably not at all, i suppose
      *
      * @return \Illuminate\Http\JsonResponse
      */
     public function showReplies(int $commentId)
     {
-        $rootComment = Comment::find($commentId);
+        $rootComment = Comment::query()->whereKey($commentId)->first();
 
         if (!$rootComment) {
             return response()->json(['message' => 'Comment not found'], 404);
@@ -55,6 +106,11 @@ class CommentController extends Controller
             return $commentArr;
         });
 
-        return response()->json(['replies' => $safeComments]);
+        return response()->json([
+            'replies' => $this->buildReplyTree(
+                $rootComment->toArray(),
+                $safeComments->toArray()
+            )
+        ]);
     }
 }
