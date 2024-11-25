@@ -26,10 +26,12 @@ const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
           </div>
           <button className="post-card-img">
             {post ? ( // TODO figure out a way to allow users to provide alt text
-              <img
-                alt=""
-                src={`https://static.weavewire.tylerhaag.dev/images/${post.image_file}`}
-              />
+              <div className="post-img-wrapper">
+                <img
+                  alt=""
+                  src={`https://static.weavewire.tylerhaag.dev/images/${post.image_file}`}
+                />
+              </div>
             ) : (
               <h2>Loading...</h2>
             )}

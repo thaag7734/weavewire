@@ -32,12 +32,16 @@
     >.post-card-img {
       padding: 0;
       height: 80%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: inherit;
       transition: clip-path 0.05s ease;
-      overflow: hidden;
+      border-radius: inherit;
+
+      &::before,
+      &::after {
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+        left: -1px;
+        top: -1px;
+      }
 
       &:hover::before,
       &:hover::after {
@@ -49,11 +53,21 @@
         clip-path: inset(-10px -10px -10px -10px);
       }
 
-      >img {
-        min-height: 100%;
-        max-width: 100%;
+      >.post-img-wrapper {
+        overflow: visible;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: inherit;
-        object-fit: cover;
+        overflow: hidden;
+
+        >img {
+          min-height: 100%;
+          max-width: 100%;
+          border-radius: inherit;
+          object-fit: cover;
+        }
       }
     }
 
