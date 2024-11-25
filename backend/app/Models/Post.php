@@ -9,9 +9,11 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Class Post
  *
+ * @property int $id
  * @property int $author_id
  * @property string $image_id
  * @property string $caption
+ * @property
  */
 class Post extends Model
 {
@@ -36,6 +38,16 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class)->with('author');
+        return Comment::with('author')
+            ->where(
+                'reply_path',
+                '~',
+                '^[0-9]+$'
+            )
+            ->where(
+                'post_id',
+                '=',
+                $this->id
+            );
     }
 }

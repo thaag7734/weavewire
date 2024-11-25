@@ -1,16 +1,16 @@
 @font-face {
-  font-family: 'Computerfont';
-  src: url('fonts/Computerfont.woff2') format('woff2'),
-    url('fonts/Computerfont.woff') format('woff');
+  font-family: "Computerfont";
+  src: url("fonts/Computerfont.woff2") format("woff2"),
+    url("fonts/Computerfont.woff") format("woff");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'CyberpunkWaifus';
-  src: url('fonts/CyberpunkWaifus.woff2') format('woff2'),
-    url('fonts/CyberpunkWaifus.woff') format('woff');
+  font-family: "CyberpunkWaifus";
+  src: url("fonts/CyberpunkWaifus.woff2") format("woff2"),
+    url("fonts/CyberpunkWaifus.woff") format("woff");
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -18,7 +18,7 @@
 
 :root {
   font-family: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
-  line-height: 1.5;
+  line-height: 1.2;
   font-size: 1.1rem;
   font-weight: 500;
 
@@ -35,8 +35,8 @@
   --c-lgray: #d6d6d6;
   /*--c-a-purp: #CA3CFF;*/
   /*--c-a-blue: #bcf8ec;*/
-  --c-a-purp: #CA3CFF;
-  --c-a-blue: #62EAF9;
+  --c-a-purp: #ca3cff;
+  --c-a-blue: #62eaf9;
 
   --font-heading: Computerfont, system-ui, sans-serif;
   --font-main: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
@@ -55,6 +55,7 @@ body {
   margin: 0;
   background-color: var(--c-black);
   scroll-snap-type: y mandatory;
+  overflow: hidden;
 }
 
 .card {

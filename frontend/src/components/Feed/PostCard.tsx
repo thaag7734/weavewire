@@ -16,13 +16,13 @@ const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
     }, [post, loaded]);
 
     return (
-      <div ref={ref} className="post-scroll-container">
+      <div id={`post-${postId}`} ref={ref} className="post-scroll-container">
         <article className="card post-card">
           <div className="op-credit">
             <div className="op-pfp pfp">
-              <img src={`${AVATAR_URL}/${post.author.avatar || "nopfp.png"}`} />
+              <img alt="" src={`${AVATAR_URL}/${post.author.avatar || "nopfp.png"}`} />
             </div>
-            <button className="username">{post.author.username}</button>
+            <button className="username">{post.author!.username}</button>
           </div>
           <button className="post-card-img">
             {post ? ( // TODO figure out a way to allow users to provide alt text

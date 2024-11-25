@@ -16,5 +16,11 @@ export interface Post extends Model {
   author_id: number;
   image_file: string;
   caption?: string;
-  author: User;
+  author?: User;
+}
+
+export interface Comment extends Model {
+  author_id: number;
+  content: string;
+  author?: User;
 }
