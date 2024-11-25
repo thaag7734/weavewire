@@ -11,15 +11,6 @@ export const csrfFetch = async (
     .split("=")[1]
     .replace("%3D", "="); // terminator gets url encoded which breaks things, fix it here
 
-  console.log({
-    ...init,
-    credentials: "include",
-    headers: {
-      ...init?.headers,
-      "X-XSRF-TOKEN": csrf,
-    },
-  })
-
   return await fetch(input, {
     ...init,
     credentials: "include",

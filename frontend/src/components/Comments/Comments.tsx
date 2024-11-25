@@ -2,14 +2,11 @@ import { useEffect, useState } from "react"
 import type React from "react"
 import { BsDashCircle, BsDashCircleFill, BsPlusCircle, BsPlusCircleFill, BsSend } from "react-icons/bs"
 import { VscCommentDiscussion } from "react-icons/vsc";
-import { useAppSelector } from "../../redux/util";
-import { selectPostById } from "../../redux/reducers/posts";
 import { ASSET_URL, AVATAR_URL } from "../../appConfig";
 import { Comment } from "../../types/Models";
 import "./Comments.css";
 
 export default function Comments({ postId }: { postId: number }) {
-  const post = useAppSelector(state => selectPostById(state, postId));
   const [comments, setComments] = useState<Record<number, Comment>>({});
   const [collapsed, setCollapsed] = useState(true);
   const [comment, setComment] = useState("");
@@ -41,7 +38,7 @@ export default function Comments({ postId }: { postId: number }) {
         <VscCommentDiscussion />
       </button>
       <div className="comment-list">
-        {Object.values(comments).map((cmt, idx) => {
+        {Object.values(comments).map((cmt) => {
           return (
             <>
               <div className="comment">
@@ -75,7 +72,6 @@ export default function Comments({ postId }: { postId: number }) {
       <form className="comment-field" onSubmit={handleSubmit}>
         <div className="input">
           <textarea
-            type="text"
             value={comment}
             onChange={(e) => setComment(e.currentTarget.value)}
             placeholder="Leave a comment"

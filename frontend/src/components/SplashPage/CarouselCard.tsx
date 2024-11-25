@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { selectPostById } from "../../redux/reducers/posts";
 import { useAppSelector } from "../../redux/util";
 import "./CarouselCard.css"
