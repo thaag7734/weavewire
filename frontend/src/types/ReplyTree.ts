@@ -81,4 +81,9 @@ export class Tree<T> {
   }
 }
 
-Tree().dF
+export class ReplyTree extends Tree<Comment> {
+  constructor(root: Comment | TreeNode<Comment>) {
+    super(root);
+  }
+
+}

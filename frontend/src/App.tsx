@@ -21,7 +21,8 @@ function App() {
   useEffect(() => {
     if (user) return;
     dispatch(restoreUser());
-  })
+  });
+
   function Layout() {
     return <Outlet />;
   }
