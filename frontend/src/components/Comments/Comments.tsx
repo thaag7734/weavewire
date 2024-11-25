@@ -32,7 +32,7 @@ export default function Comments({ postId }: { postId: number }) {
   }, [postId])
 
   const handleSubmit = (e: React.FormEvent) => {
-
+    e.preventDefault();
   }
 
   return (
@@ -74,7 +74,7 @@ export default function Comments({ postId }: { postId: number }) {
       </div>
       <form className="comment-field" onSubmit={handleSubmit}>
         <div className="input">
-          <input
+          <textarea
             type="text"
             value={comment}
             onChange={(e) => setComment(e.currentTarget.value)}

@@ -1,5 +1,5 @@
 .comments {
-  background-color: var(--c-gray);
+  background-color: var(--c-dgray);
   width: 400px;
   max-width: 30%;
   display: flex;
@@ -16,7 +16,7 @@
     width: 0;
 
     >.collapse-btn {
-      right: 0;
+      transform: translateX(400px);
     }
 
     & .comment-content {
@@ -29,10 +29,11 @@
   >.collapse-btn {
     position: absolute;
     right: 400px;
+    transition: transform 0.3s ease;
   }
 
   >.comment-list {
-    height: 90%;
+    height: calc(100% - 80px);
     overflow-y: scroll;
 
     >.comment {
@@ -133,6 +134,9 @@
 
   >.comment-field {
     display: flex;
-    height: 50px;
+    height: 80px;
+    width: 100%;
+    box-shadow: 0 0 15px 0 var(--c-blue);
+    clip-path: inset(-15px 0 0 0);
   }
 }
