@@ -21,9 +21,16 @@
   }
 
   >.collapse-btn {
+    background-color: inherit;
     position: absolute;
     right: 400px;
+    top: 25px;
     transition: transform 0.3s ease;
+    box-shadow: 0 0 15px 0 var(--c-gray);
+    clip-path: inset(-15px 0 -15px -15px);
+    border-radius: 10px 0 0 10px;
+    display: flex;
+    align-items: center;
   }
 
   >.comment-list {
@@ -48,7 +55,7 @@
           align-items: center;
 
           >.comment-pfp {
-            aspect-ratio: 1/1;
+            aspect-ratio: 1 / 1;
             height: 40px;
           }
 

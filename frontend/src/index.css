@@ -1,205 +1,207 @@
 @font-face {
-  font-family: "Computerfont";
-  src: url("fonts/Computerfont.woff2") format("woff2"),
-    url("fonts/Computerfont.woff") format("woff");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
+	font-family: "Computerfont";
+	src: url("fonts/Computerfont.woff2") format("woff2"),
+		url("fonts/Computerfont.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: "CyberpunkWaifus";
-  src: url("fonts/CyberpunkWaifus.woff2") format("woff2"),
-    url("fonts/CyberpunkWaifus.woff") format("woff");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
+	font-family: "CyberpunkWaifus";
+	src: url("fonts/CyberpunkWaifus.woff2") format("woff2"),
+		url("fonts/CyberpunkWaifus.woff") format("woff");
+	font-weight: 500;
+	font-style: normal;
+	font-display: swap;
 }
 
 :root {
-  font-family: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
-  line-height: 1.2;
-  font-size: 1.1rem;
-  font-weight: 500;
+	font-family: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
+	line-height: 1.2;
+	font-size: 1.1rem;
+	font-weight: 500;
 
-  color-scheme: dark light;
+	color-scheme: dark light;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-synthesis: none;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 
-  --c-black: #040404;
-  --c-dgray: #090909;
-  --c-gray: #151515;
-  --c-lgray: #d6d6d6;
-  /*--c-a-purp: #CA3CFF;*/
-  /*--c-a-blue: #bcf8ec;*/
-  --c-a-purp: #ca3cff;
-  --c-a-blue: #62eaf9;
+	--c-black: #040404;
+	--c-dgray: #090909;
+	--c-gray: #151515;
+	--c-lgray: #d6d6d6;
+	/*--c-a-purp: #CA3CFF;*/
+	/*--c-a-blue: #bcf8ec;*/
+	--c-a-purp: #ca3cff;
+	--c-a-blue: #62eaf9;
 
-  --font-heading: Computerfont, system-ui, sans-serif;
-  --font-main: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
+	--font-heading: Computerfont, system-ui, sans-serif;
+	--font-main: CyberpunkWaifus, system-ui, Arial, Helvetica, sans-serif;
 
-  color: var(--c-lgray);
+	color: var(--c-lgray);
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
-  padding: 0;
-  margin: 0;
-  background-color: var(--c-black);
-  scroll-snap-type: y mandatory;
-  overflow: hidden;
+	padding: 0;
+	margin: 0;
+	background-color: var(--c-black);
+	scroll-snap-type: y mandatory;
+	overflow: hidden;
 }
 
 .card {
-  border-radius: 25px 5px 25px 5px;
-  background: var(--c-gray);
-  padding: 15px;
-  position: relative;
-  overflow: hidden;
-  padding: 15px 25px;
+	border-radius: 25px 5px 25px 5px;
+	background: var(--c-gray);
+	padding: 15px;
+	position: relative;
+	overflow: hidden;
+	padding: 15px 25px;
+	box-shadow: 0 0 15px 0 var(--c-gray);
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: calc(100% - 10px);
-    height: calc(100% - 10px);
-    left: 5px;
-    top: 5px;
-    border-radius: inherit;
-    border-left: 2px solid var(--c-a-purp);
-    border-top: 2px solid var(--c-a-purp);
-    pointer-events: none;
-    clip-path: inset(-10px calc(100% - 75px) calc(100% - 35px) -10px);
-  }
+	&::before,
+	&::after {
+		content: "";
+		position: absolute;
+		width: calc(100% - 10px);
+		height: calc(100% - 10px);
+		left: 5px;
+		top: 5px;
+		border-radius: inherit;
+		border-left: 2px solid var(--c-a-purp);
+		border-top: 2px solid var(--c-a-purp);
+		pointer-events: none;
+		clip-path: inset(-10px calc(100% - 75px) calc(100% - 35px) -10px);
+	}
 
-  &::before {
-    filter: blur(3px);
-  }
+	&::before {
+		filter: blur(3px);
+	}
 
-  &::after {
-    background: transparent;
-  }
+	&::after {
+		background: transparent;
+	}
 }
 
 div.input {
-  border-radius: 10px 2px 10px 2px;
-  position: relative;
-  width: 70%;
-  flex-grow: 1;
+	border-radius: 10px 2px 10px 2px;
+	position: relative;
+	width: 70%;
+	flex-grow: 1;
 
-  &::before,
-  &::after {
-    content: "";
-    border-radius: inherit;
-    border-top: 1px solid var(--c-a-blue);
-    border-left: 1px solid var(--c-a-blue);
-    position: absolute;
-    width: calc(100% - 2px);
-    height: calc(100% - 2px);
-    left: 2px;
-    top: 2px;
-    clip-path: inset(-10px 90% 35% -10px);
-    transition: clip-path 0.5s ease;
-    pointer-events: none;
-  }
+	&::before,
+	&::after {
+		content: "";
+		border-radius: inherit;
+		border-top: 1px solid var(--c-a-blue);
+		border-left: 1px solid var(--c-a-blue);
+		position: absolute;
+		width: calc(100% - 2px);
+		height: calc(100% - 2px);
+		left: 2px;
+		top: 2px;
+		clip-path: inset(-10px 90% 35% -10px);
+		transition: clip-path 0.5s ease;
+		pointer-events: none;
+	}
 
-  &::before {
-    filter: blur(3px);
-  }
+	&::before {
+		filter: blur(3px);
+	}
 
-  &::after {
-    background: transparent;
-  }
+	&::after {
+		background: transparent;
+	}
 
-  &:focus-within::before,
-  &:focus-within::after {
-    clip-path: inset(-10px 1px 1px -10px);
-  }
+	&:focus-within::before,
+	&:focus-within::after {
+		clip-path: inset(-10px 1px 1px -10px);
+	}
 
-  >input,
-  >textarea {
-    border: none;
-    border-radius: inherit;
-    padding: 10px;
-    width: 100%;
-    height: 100%;
+	> input,
+	> textarea {
+		border: none;
+		border-radius: inherit;
+		padding: 10px;
+		width: 100%;
+		height: 100%;
 
-    &:focus {
-      outline: none;
-    }
+		&:focus {
+			outline: none;
+		}
 
-    @media only screen and (max-width: 700px) {
-      /* TODO broken */
-      padding: 2px;
-    }
-  }
+		@media only screen and (max-width: 700px) {
+			/* TODO broken */
+			padding: 2px;
+		}
+	}
 }
 
 label {
-  width: fit-content;
+	width: fit-content;
 }
 
 input,
 textarea {
-  background-color: var(--c-dgray);
-  font-size: inherit;
-  resize: none;
+	background-color: var(--c-dgray);
+	font-size: inherit;
+	font-family: inherit;
+	resize: none;
 }
 
 button {
-  padding: 8px;
-  border-radius: 10px 2px 10px 2px;
-  position: relative;
-  background: none;
-  border: none;
-  font-size: 1.25rem;
-  font-family: inherit;
+	padding: 8px;
+	border-radius: 10px 2px 10px 2px;
+	position: relative;
+	background: none;
+	border: none;
+	font-size: 1.25rem;
+	font-family: inherit;
 
-  &::before,
-  &::after {
-    content: "";
-    border-radius: inherit;
-    border: 1px solid var(--c-a-blue);
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
-    top: 0;
-    clip-path: inset(50% 50% 50% 50%);
-    transition: clip-path 0.1s ease;
-    pointer-events: none;
-  }
+	&::before,
+	&::after {
+		content: "";
+		border-radius: inherit;
+		border: 1px solid var(--c-a-blue);
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+		clip-path: inset(50% 50% 50% 50%);
+		transition: clip-path 0.1s ease;
+		pointer-events: none;
+	}
 
-  &::before {
-    filter: blur(3px);
-  }
+	&::before {
+		filter: blur(3px);
+	}
 
-  &::after {
-    background: transparent;
-  }
+	&::after {
+		background: transparent;
+	}
 
-  &:hover {
-    cursor: pointer;
+	&:hover {
+		cursor: pointer;
 
-    &::before,
-    &::after {
-      clip-path: inset(-10px 40% -10px 40%);
-    }
-  }
+		&::before,
+		&::after {
+			clip-path: inset(-10px 40% -10px 40%);
+		}
+	}
 
-  &:active::before,
-  &:active::after {
-    clip-path: inset(-10px -10px -10px -10px);
-  }
+	&:active::before,
+	&:active::after {
+		clip-path: inset(-10px -10px -10px -10px);
+	}
 }
 
 h1,
@@ -207,26 +209,26 @@ h2,
 h3,
 h4,
 h5 {
-  margin: 0;
-  font-family: Computerfont, system-ui, sans-serif;
+	margin: 0;
+	font-family: Computerfont, system-ui, sans-serif;
 }
 
 h1 {
-  font-size: 2.5rem;
+	font-size: 2.5rem;
 }
 
 h2 {
-  font-size: 2rem;
+	font-size: 2rem;
 }
 
 h3 {
-  font-size: 1.7rem;
+	font-size: 1.7rem;
 }
 
 h4 {
-  font-size: 1.25rem;
+	font-size: 1.25rem;
 }
 
 h5 {
-  font-size: 1.15rem;
+	font-size: 1.15rem;
 }
