@@ -9,6 +9,7 @@
   flex-shrink: 0;
   transition: transform 0.3s ease, width 0.3s ease;
   box-shadow: 0px 0px 15px 0px var(--c-gray);
+  max-height: 100vh;
 
   &.collapsed {
     transform: translateX(100%);
@@ -36,8 +37,7 @@
 
     >.comment {
       padding: 10px;
-      height: 200px;
-      max-height: 200px;
+      max-height: 250px;
 
       >.comment-header {
         height: 20%;
@@ -54,6 +54,7 @@
 
           >.comment-pfp {
             aspect-ratio: 1/1;
+            height: 40px;
           }
 
           >.username {

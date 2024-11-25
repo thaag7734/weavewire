@@ -26,6 +26,7 @@ export default function Comments({ postId }: { postId: number }) {
           }
 
           setComments(resComments as Record<number, Comment>)
+          document.querySelector(".comment-list")?.scrollTo(0, 0);
         })
       );
   }, [postId])
@@ -66,9 +67,7 @@ export default function Comments({ postId }: { postId: number }) {
                   {cmt.content}
                 </p>
               </div>
-              {idx !== Object.keys(comments).length - 1 && (
-                <img className="hr sm" src={`${ASSET_URL}/hr-sm.svg`} />
-              )}
+              <img className="hr sm" src={`${ASSET_URL}/hr-sm.svg`} />
             </>
           )
         })}

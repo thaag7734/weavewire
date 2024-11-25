@@ -1,72 +1,71 @@
 .post-scroll-container {
-	/* TODO this needs a mq */
-	width: 650px;
-	min-height: 100%;
-	max-height: 100%;
-	padding: 15px 0;
-	margin: 0;
-	scroll-snap-align: start;
-	scroll-snap-stop: always;
+  /* TODO this needs a mq */
+  width: 650px;
+  min-height: 100%;
+  max-height: 100%;
+  padding: 15px 0;
+  margin: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 
-	> .post-card {
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
-		height: 100%;
+  >.post-card {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 
-		> .op-credit {
-			height: 50px;
-			width: 100%;
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			margin-bottom: 10px;
+    >.op-credit {
+      height: 50px;
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 10px;
 
-			> .pfp {
-				position: relative;
-				left: -10px;
-			}
-		}
+      >.pfp {
+        position: relative;
+        left: -10px;
+      }
+    }
 
-		> .post-card-img {
-			padding: 0;
-			min-width: 100%;
-			height: 80%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: inherit;
-			transition: clip-path 0.05s ease;
+    >.post-card-img {
+      padding: 0;
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+      transition: clip-path 0.05s ease;
+      overflow: hidden;
 
-			&:hover::before,
-			&:hover::after {
-				clip-path: inset(40% -10px 40% -10px);
-			}
+      &:hover::before,
+      &:hover::after {
+        clip-path: inset(40% -10px 40% -10px);
+      }
 
-			&:active::before,
-			&:active::after {
-				clip-path: inset(-10px -10px -10px -10px);
-			}
+      &:active::before,
+      &:active::after {
+        clip-path: inset(-10px -10px -10px -10px);
+      }
 
-			> img {
-				height: 100%;
-				max-height: 100%;
-				max-width: 100%;
-				border-radius: inherit;
-				object-fit: cover;
-			}
-		}
+      >img {
+        min-height: 100%;
+        max-width: 100%;
+        border-radius: inherit;
+        object-fit: cover;
+      }
+    }
 
-		> .post-details {
-			margin: 15px 0;
-			max-height: 20%;
-			overflow: scroll;
+    >.post-details {
+      margin: 15px 0;
+      max-height: 20%;
+      overflow: scroll;
 
-			> .post-caption {
-				text-overflow: ellipsis;
-				white-space: wrap;
-			}
-		}
-	}
+      >.post-caption {
+        text-overflow: ellipsis;
+        white-space: wrap;
+      }
+    }
+  }
 }
