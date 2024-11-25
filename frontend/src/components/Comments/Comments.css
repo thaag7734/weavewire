@@ -136,7 +136,7 @@
     display: flex;
     height: 80px;
     width: 100%;
-    box-shadow: 0 0 15px 0 var(--c-blue);
+    box-shadow: 0 0 15px 0 var(--c-gray);
     clip-path: inset(-15px 0 0 0);
   }
 }
