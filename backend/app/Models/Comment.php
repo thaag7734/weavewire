@@ -52,7 +52,7 @@ class Comment extends Model
      */
     public function replies()
     {
-        return Comment::where(
+        return Comment::with('author')->where(
             'reply_path',
             '~',
             '^' . $this->reply_path . ':[0-9:]+$'

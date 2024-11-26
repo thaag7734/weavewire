@@ -38,9 +38,14 @@
     overflow-y: scroll;
     padding-top: 10px;
 
-    >.comment {
+    & .comment {
       padding: 0 10px 10px 10px;
       max-height: 250px;
+
+      &.has-replies {
+        box-shadow: 0 0 15px 6px var(--c-dgray);
+        clip-path: inset(0 0 -20px 0);
+      }
 
       >.comment-header {
         height: 20%;
@@ -141,6 +146,13 @@
         width: 100%;
         font-size: inherit;
       }
+    }
+
+    >.replies-view {
+      background-color: var(--c-gray);
+
+      padding-top: 10px;
+      margin-bottom: 10px;
     }
   }
 
