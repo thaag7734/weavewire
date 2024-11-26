@@ -36,9 +36,10 @@
   >.comment-list {
     height: calc(100% - 80px);
     overflow-y: scroll;
+    padding-top: 10px;
 
     >.comment {
-      padding: 10px;
+      padding: 0 10px 10px 10px;
       max-height: 250px;
 
       >.comment-header {
@@ -132,7 +133,13 @@
       }
 
       >.comment-content {
-        margin: 15px 0 0 0;
+        margin: 15px 0 5px 0;
+      }
+
+      >.replies-btn {
+        padding: 2px;
+        width: 100%;
+        font-size: inherit;
       }
     }
   }

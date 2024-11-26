@@ -23,4 +23,5 @@ export interface Comment extends Model {
   author_id: number;
   content: string;
   author?: User;
+  reply_count?: number;
 }

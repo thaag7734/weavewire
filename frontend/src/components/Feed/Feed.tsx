@@ -5,13 +5,13 @@ import PostCard from "./PostCard";
 import "./Feed.css";
 import Comments from "../Comments/Comments";
 
-export default function Feed(
-  { subfeed = false, popular = false }:
-    { subfeed: boolean, popular: boolean }
-) {
-  const posts = useAppSelector(state => selectOrderedPosts(state));
+export default function Feed({
+  subfeed = false,
+  popular = false,
+}: { subfeed: boolean; popular: boolean }) {
+  const posts = useAppSelector((state) => selectOrderedPosts(state));
   const dispatch = useAppDispatch();
-  const [currentPostId, setCurrentPostId] = useState<number | null>(null)
+  const [currentPostId, setCurrentPostId] = useState<number | null>(null);
   const cards = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
@@ -19,36 +19,31 @@ export default function Feed(
 
     const handleIntersect = (
       entries: IntersectionObserverEntry[],
-      _observer: IntersectionObserver
+      _observer: IntersectionObserver,
     ) => {
-      console.log('intersection with entries:', entries);
-
-      entries.forEach((entry) => {
+      for (const entry of entries) {
         if (entry.isIntersecting) {
           if (!entry.target.id.startsWith("post-")) return;
-          console.log('entry matched:', entry);
 
-          setCurrentPostId(parseInt(entry.target.id.slice(5)));
+          setCurrentPostId(Number.parseInt(entry.target.id.slice(5)));
         }
-      });
-    }
+      }
+    };
 
     const observer = new IntersectionObserver(handleIntersect, {
       root: document.querySelector("div.feed"),
       threshold: 1.0,
     });
 
-    cards.current.forEach((e) => {
-      observer.observe(e);
-    });
-  }, []);
-
-
+    for (const card of cards.current) {
+      observer.observe(card);
+    }
+  }, [dispatch]);
 
   return (
     <>
       <div className="feed">
-        {posts?.map((post, idx) =>
+        {posts?.map((post, idx) => (
           <PostCard
             key={post.id}
             ref={(ele) => {
@@ -56,12 +51,13 @@ export default function Feed(
             }}
             postId={post.id}
           />
-        )}
+        ))}
       </div>
-      {currentPostId != null
-        ? <Comments postId={currentPostId} />
-        : <h2>Loading comments...</h2>
-      }
+      {currentPostId != null ? (
+        <Comments postId={currentPostId} />
+      ) : (
+        <h2>Loading comments...</h2>
+      )}
     </>
-  )
+  );
 }
