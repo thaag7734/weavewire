@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Comment;
+use Illuminate\Database\Query\Builder;
 
 class CommentController extends Controller
 {
@@ -14,7 +15,8 @@ class CommentController extends Controller
      */
     public function show(int $commentId)
     {
-        $comment = Comment::with('author')->find($commentId);
+        $comment = Comment::with('author')
+            ->find($commentId);
 
         if (!$comment) {
             return response()->json(['message' => 'Comment not found'], 404);
@@ -22,6 +24,7 @@ class CommentController extends Controller
 
         $commentArr = $comment->toArray();
         $author = $commentArr['author'];
+        $commentArr['reply_count'] = $comment->replies()->count();
 
         unset($author['email'], $author['email_verified_at'], $author['updated_at']);
         $commentArr['author'] = $author;

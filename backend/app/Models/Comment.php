@@ -46,14 +46,17 @@ class Comment extends Model
         return $this->belongsTo(Post::class);
     }
 
+    /**
+     * this is NOT an eloquent relationship. it may be possible, but i'm not figuring it out tonight.
+     * for now it's just querying based on reply_path
+     */
     public function replies()
     {
-        return Comment::with('author')
-            ->where(
-                'reply_path',
-                '~',
-                '^' . $this->reply_path . ':[0-9:]+'
-            );
+        return Comment::where(
+            'reply_path',
+            '~',
+            '^' . $this->reply_path . ':[0-9:]+$'
+        );
     }
 
     public function author()

@@ -201,6 +201,7 @@ class PostController extends Controller
         $safeComments = $comments->map(function (Comment $comment) {
             $commentArr = $comment->toArray();
             $author = $commentArr['author'];
+            $commentArr['reply_count'] = $comment->replies()->count();
 
             unset($author['email'], $author['email_verified_at'], $author['updated_at']);
             $commentArr['author'] = $author;
