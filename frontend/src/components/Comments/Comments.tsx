@@ -11,6 +11,7 @@ import { VscCommentDiscussion } from "react-icons/vsc";
 import { ASSET_URL, AVATAR_URL } from "../../appConfig";
 import type { Comment } from "../../types/Models";
 import "./Comments.css";
+import { csrfFetch } from "../../util/csrfFetch";
 
 export default function Comments({ postId }: { postId: number }) {
   const [comments, setComments] = useState<Record<number, Comment>>({});
@@ -23,7 +24,7 @@ export default function Comments({ postId }: { postId: number }) {
   const [comment, setComment] = useState("");
 
   useEffect(() => {
-    // keeping comments in the store offers  benefits at the moment, so we simply don't
+    // keeping comments in the store offers no benefits at the moment, so we simply don't
     fetch(`/api/post/${postId}/comments`).then((res) =>
       res.json().then((data: { comments: Comment[] }) => {
         const resComments: Record<number, Comment> = {};
@@ -83,12 +84,20 @@ export default function Comments({ postId }: { postId: number }) {
     )
   }
 
-  useEffect(() => {
-    console.log(replies);
-  }, [replies]);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const res = await csrfFetch(`/api/post/${postId}/comments`, {
+      method: "POST",
+      body: JSON.stringify({ content: comment }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      setComments(prev => ({ ...prev, [data.id]: data }));
+    }
   };
 
   return (
@@ -101,7 +110,9 @@ export default function Comments({ postId }: { postId: number }) {
         <VscCommentDiscussion />
       </button>
       <div className="comment-list">
-        {Object.values(comments).map((cmt) => {
+        {Object.values(comments).sort(
+          (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+        ).map((cmt) => {
           return (
             <>
               <div
@@ -155,7 +166,6 @@ export default function Comments({ postId }: { postId: number }) {
                       className="comment"
                       style={{ paddingLeft: `${(reply.depth + 1) * 15}px` }}
                     >
-                      {console.log("depth:", reply.depth)}
                       <div className="comment-header">
                         <div className="nametag">
                           <div className="comment-pfp pfp">

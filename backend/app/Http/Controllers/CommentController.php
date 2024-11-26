@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use \App\Models\Comment;
+use App\Models\Post;
 use Illuminate\Database\Query\Builder;
 
 class CommentController extends Controller
@@ -115,5 +116,38 @@ class CommentController extends Controller
                 $safeComments->toArray()
             )
         ]);
+    }
+
+    /**
+     * Create a new top-level comment
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function store(Request $request, int $postId)
+    {
+        $post = Post::query()->find($postId);
+
+        if (!$post) {
+            return response()->json(['message' => 'Post not found']);
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|max:255',
+        ]);
+
+        $user = $request->user();
+
+        $comment = Comment::create([
+            'author_id' => $user->id,
+            'content' => $validated['content'],
+            'post_id' => $post->id,
+        ]);
+
+        $author = $user->toArray();
+
+        unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+        $commentArr = $comment->toArray();
+
+        return response()->json([...$commentArr, 'author' => $author]);
     }
 }

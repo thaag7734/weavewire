@@ -26,7 +26,9 @@ Route::prefix('/post')->group(function () {
     Route::get('/{postId}/comments', [PostController::class, 'showComments'])
         ->where('postId', '[0-9]+');
 
-    Route::get('/all', [PostController::class, 'showAll']);
+    Route::middleware(['auth:sanctum'])
+        ->post('/{postId}/comments', [CommentController::class, 'store'])
+        ->where('postId', '[0-9]+');
 
     Route::middleware(['auth:sanctum'])
         ->put('/{postId}', [PostController::class, 'update'])
@@ -35,6 +37,8 @@ Route::prefix('/post')->group(function () {
     Route::middleware(['auth:sanctum'])
         ->delete('/{postId}', [PostController::class, 'delete'])
         ->where('postId', '[0-9]+');
+
+    Route::get('/all', [PostController::class, 'showAll']);
 
     Route::middleware(['auth:sanctum'])
         ->post('/', [PostController::class, 'store']);
