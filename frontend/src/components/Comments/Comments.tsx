@@ -46,6 +46,7 @@ export default function Comments({ postId }: { postId: number }) {
 
       if (replies.rootCommentId === id) return;
     }
+
     fetch(`/api/comment/${id}/replies`).then((res) =>
       res.json().then((data: { replies: Comment[] }) => {
         const visited: Set<Comment> = new Set();
@@ -84,8 +85,17 @@ export default function Comments({ postId }: { postId: number }) {
     )
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
+
+    if (!comment.length) {
+      const element = document.querySelector("form.comment-field>div.input");
+      console.log("element:", element);
+
+      if (!element) return;
+
+      element.classList.add("error");
+    }
 
     const res = await csrfFetch(`/api/post/${postId}/comments`, {
       method: "POST",
@@ -99,6 +109,11 @@ export default function Comments({ postId }: { postId: number }) {
       setComments(prev => ({ ...prev, [data.id]: data }));
     }
   };
+
+  const handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement>): Promise<void> => {
+    setComment(e.currentTarget.value);
+    e.currentTarget.parentElement!.classList.remove("error")
+  }
 
   return (
     <aside className={`comments${collapsed ? " collapsed" : ""}`}>
@@ -199,7 +214,7 @@ export default function Comments({ postId }: { postId: number }) {
         <div className="input">
           <textarea
             value={comment}
-            onChange={(e) => setComment(e.currentTarget.value)}
+            onChange={handleChange}
             placeholder="Leave a comment"
           />
         </div>
