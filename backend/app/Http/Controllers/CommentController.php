@@ -150,4 +150,38 @@ class CommentController extends Controller
 
         return response()->json([...$commentArr, 'author' => $author]);
     }
+
+    /**
+     * Create a new reply
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function storeReply(Request $request, int $commentId)
+    {
+        $comment = Comment::query()->find($commentId);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found']);
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|max:255',
+        ]);
+
+        $user = $request->user();
+
+        $comment = Comment::create([
+            'author_id' => $user->id,
+            'content' => $validated['content'],
+            'post_id' => $comment->post_id,
+            'reply_path' => $comment->reply_path,
+        ]);
+
+        $author = $user->toArray();
+
+        unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+        $commentArr = $comment->toArray();
+
+        return response()->json([...$commentArr, 'author' => $author]);
+    }
 }

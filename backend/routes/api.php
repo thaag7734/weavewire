@@ -50,4 +50,8 @@ Route::prefix('/comment')->group(function () {
 
     Route::get('/{commentId}/replies', [CommentController::class, 'showReplies'])
         ->where('commentId', '[0-9]+');
+
+    Route::middleware(['auth:sanctum'])
+        ->post('/{commentId}/replies', [CommentController::class, 'storeReply'])
+        ->where('commentId', '[0-9]+');
 });

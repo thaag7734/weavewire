@@ -5,6 +5,7 @@ import {
   BsDashCircleFill,
   BsPlusCircle,
   BsPlusCircleFill,
+  BsReply,
   BsSend,
 } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
@@ -12,16 +13,18 @@ import { ASSET_URL, AVATAR_URL } from "../../appConfig";
 import type { Comment } from "../../types/Models";
 import "./Comments.css";
 import { csrfFetch } from "../../util/csrfFetch";
+import { RxCross1 } from "react-icons/rx";
 
 export default function Comments({ postId }: { postId: number }) {
   const [comments, setComments] = useState<Record<number, Comment>>({});
   const [replies, setReplies] = useState<{
     rootCommentId: number | null;
-    comments: Comment[];
+    comments: (Comment & { depth: number })[];
   }>({ rootCommentId: null, comments: [] });
   const [repliesVisible, setRepliesVisible] = useState(false);
   const [collapsed, setCollapsed] = useState(true);
   const [comment, setComment] = useState("");
+  const [replyingTo, setReplyingTo] = useState<number | null>(null);
 
   useEffect(() => {
     // keeping comments in the store offers no benefits at the moment, so we simply don't
@@ -39,22 +42,24 @@ export default function Comments({ postId }: { postId: number }) {
     );
   }, [postId]);
 
-  const showReplies = (id: number) => {
-    if (repliesVisible) {
+  const showReplies = (id: number, noToggle: boolean = false) => {
+    if (repliesVisible && !noToggle) {
       setRepliesVisible(false);
       setReplies({ rootCommentId: null, comments: [] })
 
       if (replies.rootCommentId === id) return;
     }
 
-    fetch(`/api/comment/${id}/replies`).then((res) =>
+    fetch(`/api/comment/${id}/replies`).then((res) => {
+      setReplies({ rootCommentId: id, comments: [] });
+
       res.json().then((data: { replies: Comment[] }) => {
         const visited: Set<Comment> = new Set();
-        const queue: Comment[] = data.replies.map((reply) => {
+        const queue: (Comment & { depth: number })[] = data.replies.map((reply) => {
           return { ...reply, depth: 0 };
         });
 
-        function traverse(depth = 0): void {
+        function traverse(): void {
           if (queue.length === 0) {
             return;
           }
@@ -71,8 +76,7 @@ export default function Comments({ postId }: { postId: number }) {
           for (const child of current.children!) {
             if (visited.has(child)) continue;
 
-            // @ts-ignore
-            queue.push({ ...child, depth: depth + 1 });
+            queue.push({ ...child, depth: current.depth + 1 });
           }
 
           traverse();
@@ -82,13 +86,13 @@ export default function Comments({ postId }: { postId: number }) {
         setReplies(prev => ({ ...prev, rootCommentId: id }));
         setRepliesVisible(true);
       })
-    )
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
 
-    if (!comment.length) {
+    if (!comment.length || comment.length > 255) {
       const element = document.querySelector("form.comment-field>div.input");
       console.log("element:", element);
 
@@ -97,7 +101,10 @@ export default function Comments({ postId }: { postId: number }) {
       element.classList.add("error");
     }
 
-    const res = await csrfFetch(`/api/post/${postId}/comments`, {
+    const fetchUrl = replyingTo
+      ? `/api/comment/${replyingTo}/replies`
+      : `/api/post/${postId}/comments`
+    const res = await csrfFetch(fetchUrl, {
       method: "POST",
       body: JSON.stringify({ content: comment }),
       headers: { "Content-Type": "application/json" },
@@ -106,13 +113,53 @@ export default function Comments({ postId }: { postId: number }) {
     const data = await res.json();
 
     if (res.ok) {
-      setComments(prev => ({ ...prev, [data.id]: data }));
+      if (!replyingTo) {
+        setComments(prev => ({ ...prev, [data.id]: data }));
+      } else {
+        // TODO this is a temporary cop-out that WILL cause issues and should be fixed later
+        showReplies(
+          comments[replyingTo]
+            ? replyingTo
+            : parseInt(
+              replies
+                .comments
+                .find(c => c.id === replyingTo)!
+                .reply_path.split(":")[0]
+            ),
+          true
+        );
+      }
+
+      setComment("");
     }
   };
 
   const handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement>): Promise<void> => {
     setComment(e.currentTarget.value);
-    e.currentTarget.parentElement!.classList.remove("error")
+
+    if (comment.length > 0 && comment.length <= 255) {
+      e.currentTarget.parentElement!.classList.remove("error")
+    }
+  }
+
+  const handleReplyClicked = async (e: React.MouseEvent<HTMLDivElement>): Promise<void> => {
+    e.stopPropagation();
+
+    const target = e.currentTarget;
+
+    // i hate this more than any other line of code in this entire project,
+    // possibly more than every line of code i've ever written in my life
+    const commentId = Number.parseInt(
+      target
+        .parentElement!
+        .parentElement!
+        .parentElement!
+        .dataset
+        .id!
+    );
+    console.log("id:", commentId);
+
+    setReplyingTo(commentId);
   }
 
   return (
@@ -132,6 +179,7 @@ export default function Comments({ postId }: { postId: number }) {
             <>
               <div
                 key={cmt.id}
+                data-id={cmt.id}
                 className={
                   `comment${repliesVisible && replies.rootCommentId === cmt.id
                     ? " has-replies"
@@ -148,6 +196,9 @@ export default function Comments({ postId }: { postId: number }) {
                     </button>
                   </div>
                   <div className="comment-reactions">
+                    <div className="reply-btn" onClick={handleReplyClicked}>
+                      <BsReply />
+                    </div>
                     <div className="reaction-like">
                       <BsPlusCircle />
                       {/*<BsPlusCircleFill />*/}
@@ -178,6 +229,7 @@ export default function Comments({ postId }: { postId: number }) {
                   {replies.comments.map((reply) => (
                     <div
                       key={reply.id}
+                      data-id={reply.id}
                       className="comment"
                       style={{ paddingLeft: `${(reply.depth + 1) * 15}px` }}
                     >
@@ -191,6 +243,9 @@ export default function Comments({ postId }: { postId: number }) {
                           </button>
                         </div>
                         <div className="comment-reactions">
+                          <div className="reply-btn" onClick={handleReplyClicked}>
+                            <BsReply />
+                          </div>
                           <div className="reaction-like">
                             <BsPlusCircle />
                             {/*<BsPlusCircleFill />*/}
@@ -211,6 +266,18 @@ export default function Comments({ postId }: { postId: number }) {
         })}
       </div>
       <form className="comment-field" onSubmit={handleSubmit}>
+        <div className={`replying-to${!replyingTo ? " hidden" : ""}`}>
+          <span>Replying to <span className="username">{
+            replyingTo ? (
+              comments[replyingTo]
+              ?? replies.comments.find(c => c.id === replyingTo)
+            )?.author!.username : null
+          }</span></span>
+          <div
+            className="cancel-reply-btn"
+            onClick={() => setReplyingTo(null)}
+          ><RxCross1 /></div>
+        </div>
         <div className="input">
           <textarea
             value={comment}

@@ -23,6 +23,7 @@ export interface Comment extends Model {
   author_id: number;
   content: string;
   author?: User;
+  reply_path: string;
 
   // in general, these two properties are mutually exclusive
   reply_count?: number;

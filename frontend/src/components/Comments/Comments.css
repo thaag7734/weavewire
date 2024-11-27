@@ -78,7 +78,8 @@
           font-size: 1.1rem;
 
           >.reaction-like,
-          >.reaction-dislike {
+          >.reaction-dislike,
+          >.reply-btn {
             height: 1.1rem;
             transition: filter 0.05s ease;
             position: relative;
@@ -111,6 +112,7 @@
 
           >.reaction-like {
             margin-right: 5px;
+            margin-left: 5px;
 
             &:hover {
               color: var(--c-a-blue);
@@ -134,11 +136,23 @@
               border: 1px solid #f00;
             }
           }
+
+          >.reply-btn {
+            &:hover {
+              color: var(--c-a-purp);
+            }
+
+            &:active::before {
+              border: 1px solid
+            }
+          }
         }
       }
 
       >.comment-content {
         margin: 15px 0 5px 0;
+        max-height: 100%;
+        overflow: scroll;
       }
 
       >.replies-btn {
@@ -156,10 +170,67 @@
   }
 
   >.comment-field {
+    position: relative;
     display: flex;
     height: 80px;
     width: 100%;
-    box-shadow: 0 0 15px 0 var(--c-gray);
-    clip-path: inset(-15px 0 0 0);
+
+    >.replying-to {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 5px;
+      background-color: var(--c-dgray);
+      position: absolute;
+      height: 2rem;
+      transform: translateY(-2rem);
+      box-shadow: 0 0 15px 0 var(--c-gray);
+      clip-path: inset(-25px 0 0 0);
+      transition: transform 0.1s ease;
+
+      &.hidden {
+        transform: translateY(0);
+
+        >.cancel-reply-btn,
+        >.cancel-reply-btn:hover {
+          transition: none;
+          color: transparent;
+        }
+      }
+
+      >.cancel-reply-btn {
+        height: 1rem;
+        width: 1rem;
+        transition: color 0.1s ease, filter 0.1s ease;
+        position: relative;
+
+        &:hover {
+          color: #f00;
+          cursor: pointer;
+          filter: brightness(70%);
+        }
+
+        &:active {
+          filter: none;
+        }
+
+        &::before {
+          content: "";
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(2px);
+          height: 100%;
+          width: 100%;
+          pointer-events: none;
+        }
+
+        &.selected {
+          &:hover {
+            color: inherit;
+          }
+        }
+      }
+    }
   }
 }

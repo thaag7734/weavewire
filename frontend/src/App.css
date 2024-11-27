@@ -63,3 +63,8 @@ button.username {
     align-self: center;
   }
 }
+
+p.username,
+span.username {
+  font-family: var(--font-heading);
+}
