@@ -74,7 +74,7 @@ class CommentController extends Controller
             fn($a, $b) => $a['created_at'] <=> strtotime($b['created_at'])
         );
 
-        foreach ($tree as $reply) {
+        foreach ($tree as &$reply) {
             if (!empty($reply['children'])) {
                 $this->sortReplyTree($reply['children']);
             }
