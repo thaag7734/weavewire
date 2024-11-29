@@ -183,6 +183,11 @@ export default function Comments({ postId }: { postId: number }) {
 
     setEditingId(null);
     setReplyingTo(commentId);
+    (
+      document.querySelector(
+        "form.comment-field>div.input>textarea",
+      ) as HTMLTextAreaElement
+    ).focus();
   };
 
   const handleEditClicked = async (
@@ -203,6 +208,11 @@ export default function Comments({ postId }: { postId: number }) {
       comments[commentId]?.content ??
       replies.comments.find((c) => c.id === replyingTo)!.content,
     );
+    (
+      document.querySelector(
+        "form.comment-field>div.input>textarea",
+      ) as HTMLTextAreaElement
+    ).focus();
   };
 
   return (
