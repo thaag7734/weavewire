@@ -314,7 +314,7 @@ export default function Comments({ postId }: { postId: number }) {
                             </button>
                           </div>
                           <div className="comment-reactions">
-                            {cmt.author_id === user?.id ? (
+                            {reply.author_id === user?.id ? (
                               <div
                                 className="edit-btn"
                                 onClick={handleEditClicked}
