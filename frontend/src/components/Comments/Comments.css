@@ -79,7 +79,8 @@
 
           >.reaction-like,
           >.reaction-dislike,
-          >.reply-btn {
+          >.reply-btn,
+          >.edit-btn {
             height: 1.1rem;
             transition: filter 0.05s ease;
             position: relative;
@@ -143,7 +144,17 @@
             }
 
             &:active::before {
-              border: 1px solid
+              border: 1px solid;
+            }
+          }
+
+          >.edit-btn {
+            &:hover {
+              color: #fff;
+            }
+
+            &:active::before {
+              border: 1px solid;
             }
           }
         }
@@ -152,7 +163,7 @@
       >.comment-content {
         margin: 15px 0 5px 0;
         max-height: 100%;
-        overflow: scroll;
+        overflow-y: auto;
       }
 
       >.replies-btn {
@@ -175,7 +186,7 @@
     height: 80px;
     width: 100%;
 
-    >.replying-to {
+    >.action-line {
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -192,14 +203,14 @@
       &.hidden {
         transform: translateY(0);
 
-        >.cancel-reply-btn,
-        >.cancel-reply-btn:hover {
+        >.cancel-action-btn,
+        >.cancel-action-btn:hover {
           transition: none;
           color: transparent;
         }
       }
 
-      >.cancel-reply-btn {
+      >.cancel-action-btn {
         height: 1rem;
         width: 1rem;
         transition: color 0.1s ease, filter 0.1s ease;

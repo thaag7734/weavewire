@@ -56,7 +56,7 @@ class PostController extends Controller
             'image_file' => $imageFilename,
         ]);
 
-        return response()->json($post);
+        return response()->json($post, 201);
     }
 
     /**

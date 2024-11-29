@@ -128,7 +128,7 @@ class CommentController extends Controller
         $post = Post::query()->find($postId);
 
         if (!$post) {
-            return response()->json(['message' => 'Post not found']);
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         $validated = $request->validate([
@@ -148,7 +148,7 @@ class CommentController extends Controller
         unset($author['email'], $author['email_verified_at'], $author['updated_at']);
         $commentArr = $comment->toArray();
 
-        return response()->json([...$commentArr, 'author' => $author]);
+        return response()->json([...$commentArr, 'author' => $author], 201);
     }
 
     /**
@@ -161,7 +161,7 @@ class CommentController extends Controller
         $comment = Comment::query()->find($commentId);
 
         if (!$comment) {
-            return response()->json(['message' => 'Comment not found']);
+            return response()->json(['message' => 'Comment not found'], 404);
         }
 
         $validated = $request->validate([
@@ -175,6 +175,43 @@ class CommentController extends Controller
             'content' => $validated['content'],
             'post_id' => $comment->post_id,
             'reply_path' => $comment->reply_path,
+        ]);
+
+        $author = $user->toArray();
+
+        unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+        $commentArr = $comment->toArray();
+
+        return response()->json([...$commentArr, 'author' => $author]);
+    }
+
+    /**
+     * Update an existing comment
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(Request $request, int $commentId)
+    {
+        $comment = Comment::query()->find($commentId);
+
+        if (!$comment) {
+            return response()->json(['message' => 'Comment not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'content' => 'required|max:255',
+        ]);
+
+        $user = $request->user();
+
+        if ($user->id != $comment->author_id) {
+            return response()->json([
+                'message' => 'You are not allowed to edit this comment'
+            ], 403);
+        }
+
+        $comment->update([
+            'content' => $validated['content'],
         ]);
 
         $author = $user->toArray();

@@ -74,7 +74,7 @@
 		> .post-details {
 			margin: 15px 0;
 			max-height: 20%;
-			overflow: scroll;
+			overflow-y: auto;
 
 			> .post-caption {
 				text-overflow: ellipsis;
