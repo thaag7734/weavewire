@@ -2,7 +2,12 @@ import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  useNavigate,
+} from "react-router-dom";
 import SplashPage from "./components/SplashPage/SplashPage";
 import { csrfFetch } from "./util/csrfFetch";
 import Feed from "./components/Feed/Feed";
@@ -15,15 +20,19 @@ if (import.meta.env.MODE !== "production") {
 }
 
 function App() {
-  const user = useAppSelector(state => state.session.user);
+  const user = useAppSelector((state) => state.session.user);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    if (user) return;
-    dispatch(restoreUser());
-  });
-
   function Layout() {
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      if (user) return;
+
+      dispatch(restoreUser()).then(() => {
+        if (!user) navigate("/");
+      });
+    }, [navigate]);
     return <Outlet />;
   }
 
@@ -44,7 +53,7 @@ function App() {
               <Feed subfeed={false} popular={false} />
             </div>
           ),
-        }
+        },
       ],
     },
   ]);
