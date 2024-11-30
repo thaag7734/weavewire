@@ -8,3 +8,8 @@ export interface SignupForm {
   email: string;
   password: string;
 }
+
+export interface PostForm {
+  caption: string;
+  image: Blob;
+}

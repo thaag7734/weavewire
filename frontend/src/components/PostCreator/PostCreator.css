@@ -1,0 +1,52 @@
+.post-creator {
+	min-height: 100%;
+	width: 650px;
+	padding: 15px 0;
+	margin: 0 auto;
+}
+
+.new-post-card {
+	padding-top: 30px;
+
+	> .post-details {
+		height: 15%;
+		overflow: visible;
+
+		> .input {
+			width: 100%;
+			height: 100%;
+
+			> .caption-field {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+
+	> .post-card-img {
+		background-color: var(--c-dgray);
+		color: var(--c-lgray);
+
+		> svg {
+			width: 100px;
+			height: 100px;
+		}
+	}
+
+	> .new-post-controls {
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+
+		> .submit-post {
+			background-color: var(--c-dgray);
+			width: 30%;
+			justify-self: flex-end;
+		}
+
+		> .error {
+			margin-right: 25px;
+		}
+	}
+}

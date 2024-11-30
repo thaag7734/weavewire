@@ -14,6 +14,7 @@ import Feed from "./components/Feed/Feed";
 import Sidebar from "./components/Sidebar/Sidebar";
 import { useAppDispatch, useAppSelector } from "./redux/util";
 import { restoreUser } from "./redux/reducers/session";
+import PostCreator from "./components/PostCreator/PostCreator";
 
 if (import.meta.env.MODE !== "production") {
   (window as any).csrfFetch = csrfFetch;
@@ -51,6 +52,15 @@ function App() {
             <div className="triple-pane">
               <Sidebar />
               <Feed subfeed={false} popular={false} />
+            </div>
+          ),
+        },
+        {
+          path: "/new_post",
+          element: (
+            <div className="triple-pane">
+              <Sidebar />
+              <PostCreator />
             </div>
           ),
         },
