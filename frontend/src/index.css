@@ -173,6 +173,16 @@ button {
 	font-size: 1.25rem;
 	font-family: inherit;
 
+	&:disabled {
+		&::before,
+		&:hover::before,
+		&:hover::after,
+		&::after {
+			border-color: #f00;
+			clip-path: inset(-10px -10px -10px -10px);
+		}
+	}
+
 	&::before,
 	&::after {
 		content: "";

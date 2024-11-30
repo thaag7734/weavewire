@@ -1,5 +1,7 @@
 .post-creator {
-	min-height: 100%;
+	min-height: 100vh;
+	height: 100vh;
+	max-height: 100vh;
 	width: 650px;
 	padding: 15px 0;
 	margin: 0 auto;
@@ -7,6 +9,11 @@
 
 .new-post-card {
 	padding-top: 30px;
+	max-height: 100%;
+
+	& input[type="file"] {
+		display: none;
+	}
 
 	> .post-details {
 		height: 15%;

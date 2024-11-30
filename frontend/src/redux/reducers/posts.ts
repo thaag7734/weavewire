@@ -7,12 +7,15 @@ import {
 import type { Post } from "../../types/Models";
 import { createAppAsyncThunk } from "../util";
 import type { RootState } from "../store";
+import type { PostForm } from "../../types/Forms";
+import { csrfFetch } from "../../util/csrfFetch";
 
 const PREFIX = "posts";
 
 const GET_RECENT_POSTS = `${PREFIX}/getRecentPosts`;
 const GET_POST = `${PREFIX}/getPost`;
 const GET_USER_POSTS = `${PREFIX}/getUserPosts`;
+const CREATE_POST = `${PREFIX}/createPost`;
 
 export const getRecentPosts = createAppAsyncThunk(
   GET_RECENT_POSTS,
@@ -59,6 +62,28 @@ export const getUserPosts = createAppAsyncThunk(
   },
 );
 
+export const createPost = createAppAsyncThunk(
+  CREATE_POST,
+  async (form: PostForm, { fulfillWithValue, rejectWithValue }) => {
+    const formData = new FormData();
+    formData.append("image", form.image);
+    formData.append("caption", form.caption);
+
+    const res = await csrfFetch("/api/post", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return rejectWithValue(data);
+    }
+
+    return fulfillWithValue(data);
+  },
+);
+
 export const selectPostById = createSelector(
   [
     (state: RootState) => state.posts,
@@ -69,12 +94,12 @@ export const selectPostById = createSelector(
 
 export const selectAllPosts = createSelector(
   [(state: RootState) => state.posts],
-  (ps: PostsState) => Object.values(ps.posts)
+  (ps: PostsState) => Object.values(ps.posts),
 );
 
 export const selectOrderedPosts = createSelector(
   [(state: RootState) => state.posts],
-  (ps: PostsState) => ps.order.map(id => ps.posts[id]),
+  (ps: PostsState) => ps.order.map((id) => ps.posts[id]),
 );
 
 export interface PostsState {
@@ -89,19 +114,23 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getPost.fulfilled, (state, action: PayloadAction<Post>) => {
-      state.posts[action.payload.id] = action.payload;
-    });
-    builder.addMatcher(
-      (action) => isAnyOf(getRecentPosts.fulfilled)(action),
-      (state, action: PayloadAction<{ posts: Post[] }>) => {
-        action.payload.posts.forEach((post) => {
-          if (state.order.includes(post.id)) return;
+    builder
+      .addMatcher(
+        (action) => isAnyOf(getPost.fulfilled, createPost.fulfilled)(action),
+        (state, action: PayloadAction<Post>) => {
+          state.posts[action.payload.id] = action.payload;
+        },
+      )
+      .addMatcher(
+        (action) => isAnyOf(getRecentPosts.fulfilled)(action),
+        (state, action: PayloadAction<{ posts: Post[] }>) => {
+          for (const post of action.payload.posts) {
+            if (state.order.includes(post.id)) return;
 
-          state.posts[post.id] = post;
-          state.order.push(post.id);
-        });
-      },
-    );
+            state.posts[post.id] = post;
+            state.order.push(post.id);
+          }
+        },
+      );
   },
 });

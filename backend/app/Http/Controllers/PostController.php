@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -48,6 +47,10 @@ class PostController extends Controller
         ]);
 
         $path = $request->file('image')->store('images', 's3');
+        if (!$path) {
+            return response()->json(['message' => 'Image upload failed'], 500);
+        }
+
         $imageFilename = explode('/', $path)[1];
 
         $post = Post::create([
@@ -56,7 +59,11 @@ class PostController extends Controller
             'image_file' => $imageFilename,
         ]);
 
-        return response()->json($post, 201);
+        if ($post) {
+            return response()->json($post, 201);
+        } else {
+            return response()->json(['message' => 'Failed to create post'], 500);
+        }
     }
 
     /**
@@ -162,7 +169,7 @@ class PostController extends Controller
         $offset = $offset < 0 ? 0 : $offset;
 
         $posts = Post::with('author')
-            ->orderBy('id', 'asc')
+            ->orderBy('created_at', 'desc')
             ->skip($offset)
             ->take($limit)
             ->get();
@@ -192,7 +199,7 @@ class PostController extends Controller
         $post = Post::find($postId);
 
         if (!$post) {
-            return response()->json(['message' => 'Post not found']);
+            return response()->json(['message' => 'Post not found'], 404);
         }
 
         $comments = $post->comments()->get();
