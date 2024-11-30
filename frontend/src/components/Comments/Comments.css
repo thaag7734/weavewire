@@ -33,12 +33,19 @@
     align-items: center;
   }
 
+  >h2 {
+    align-self: center;
+    margin-top: 20px;
+  }
+
   >.comment-list {
     height: calc(100% - 80px);
+    width: 100%;
     overflow-y: scroll;
     padding-top: 10px;
 
     & .comment {
+      width: 100%;
       padding: 0 10px 10px 10px;
       max-height: 250px;
 

@@ -15,29 +15,33 @@ export default function Feed({
   const cards = useRef<HTMLDivElement[]>([]);
 
   useEffect(() => {
-    dispatch(getRecentPosts());
+    let observer: IntersectionObserver;
 
-    const handleIntersect = (
-      entries: IntersectionObserverEntry[],
-      _observer: IntersectionObserver,
-    ) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          if (!entry.target.id.startsWith("post-")) return;
+    dispatch(getRecentPosts()).then(() => {
+      const handleIntersect = (
+        entries: IntersectionObserverEntry[],
+        _observer: IntersectionObserver,
+      ) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            if (!entry.target.id.startsWith("post-")) return;
 
-          setCurrentPostId(Number.parseInt(entry.target.id.slice(5)));
+            setCurrentPostId(Number.parseInt(entry.target.id.slice(5)));
+          }
         }
-      }
-    };
+      };
 
-    const observer = new IntersectionObserver(handleIntersect, {
-      root: document.querySelector("div.feed"),
-      threshold: 1.0,
+      observer = new IntersectionObserver(handleIntersect, {
+        root: document.querySelector("div.feed"),
+        threshold: 1.0,
+      });
+
+      for (const card of cards.current) {
+        observer.observe(card);
+      }
     });
 
-    for (const card of cards.current) {
-      observer.observe(card);
-    }
+    return () => observer?.disconnect();
   }, [dispatch]);
 
   return (
@@ -53,11 +57,7 @@ export default function Feed({
           />
         ))}
       </div>
-      {currentPostId != null ? (
-        <Comments postId={currentPostId} />
-      ) : (
-        <h2>Loading comments...</h2>
-      )}
+      {currentPostId ? <Comments postId={currentPostId} /> : null}
     </>
   );
 }

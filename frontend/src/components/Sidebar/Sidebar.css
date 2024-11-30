@@ -1,67 +1,92 @@
 /* TODO many things in this file need several media queries */
 
 .sidebar {
-  background-color: var(--c-dgray);
-  box-shadow: 0px 0px 15px 0 var(--c-gray);
-  width: 300px;
-  height: 100vh;
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: column;
+	background-color: var(--c-dgray);
+	box-shadow: 0px 0px 15px 0 var(--c-gray);
+	width: 300px;
+	height: 100vh;
+	position: sticky;
+	top: 0;
+	display: flex;
+	flex-direction: column;
 
-  >.user-summary {
-    height: 100px;
-    display: grid;
-    grid-template-columns: 100px 200px;
-    align-items: center;
+	> .user-summary {
+		height: 100px;
+		display: grid;
+		grid-template-columns: 100px 200px;
+		align-items: center;
 
-    >.summary-pfp {
-      margin: 0 20px 0 10px;
-      width: 80px;
-      height: 80px;
-      position: relative;
-      top: 10px;
-      overflow: hidden;
+		> .summary-pfp {
+			margin: 0 20px 0 10px;
+			width: 80px;
+			height: 80px;
+			position: relative;
+			top: 10px;
+			overflow: hidden;
 
-      &::before {
-        filter: blur(5px);
-      }
-    }
+			&::before {
+				filter: blur(5px);
+			}
+		}
 
-    >.summary-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      height: inherit;
+		> .summary-text {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			height: inherit;
 
-      >button.username {
-        position: relative;
-        margin-top: 10px;
-        left: -8px;
-      }
+			> button.username {
+				position: relative;
+				margin-top: 10px;
+				left: -8px;
+			}
 
-      .summary-status {
-        display: flex;
-        overflow: hidden;
-        max-height: 2lh;
-        max-width: 100%;
-        text-overflow: ellipsis;
-      }
-    }
-  }
+			.summary-status {
+				display: flex;
+				overflow: hidden;
 
-  nav {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: 10px;
+				/* pretty sure this does nothing */
+				max-height: 2lh;
 
-    >button {
-      margin-bottom: 10px;
-      height: 3rem;
-      font-family: var(--font-heading);
-      font-size: 2rem;
-    }
-  }
+				max-width: 100%;
+				text-overflow: ellipsis;
+			}
+		}
+	}
+
+	nav {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		width: 100%;
+		padding: 10px;
+		height: 100%;
+
+		& button {
+			margin-bottom: 10px;
+			height: 3rem;
+			font-family: var(--font-heading);
+			font-size: 2rem;
+		}
+
+		> .nav-top {
+			display: flex;
+			flex-direction: column;
+		}
+
+		> .nav-btm {
+			> .new-post-btn {
+				background-color: var(--c-lgray);
+				color: var(--c-dgray);
+				font-size: 1.5rem;
+				height: 2rem;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				vertical-align: middle;
+				line-height: 1.5rem;
+				width: 100%;
+			}
+		}
+	}
 }

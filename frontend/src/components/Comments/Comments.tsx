@@ -224,129 +224,133 @@ export default function Comments({ postId }: { postId: number }) {
       >
         <VscCommentDiscussion />
       </button>
-      <div className="comment-list">
-        {Object.values(comments)
-          .sort(
-            (a, b) =>
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime(),
-          )
-          .map((cmt) => {
-            return (
-              <>
-                <div
-                  key={cmt.id}
-                  data-id={cmt.id}
-                  className={`comment${repliesVisible && replies.rootCommentId === cmt.id
-                      ? " has-replies"
-                      : ""
-                    }${editingId === cmt.id ? " editing" : ""}`}
-                >
-                  <div className="comment-header">
-                    <div className="nametag">
-                      <div className="comment-pfp pfp">
-                        <img
-                          alt=""
-                          src={`${AVATAR_URL}/${cmt.author!.avatar}`}
-                        />
-                      </div>
-                      <button type="button" className="username">
-                        {cmt.author!.username}
-                      </button>
-                    </div>
-                    <div className="comment-reactions">
-                      {cmt.author_id === user?.id ? (
-                        <div className="edit-btn" onClick={handleEditClicked}>
-                          <FiEdit3 />
+      {Object.values(comments).length ? (
+        <div className="comment-list">
+          {Object.values(comments)
+            .sort(
+              (a, b) =>
+                new Date(b.created_at).getTime() -
+                new Date(a.created_at).getTime(),
+            )
+            .map((cmt) => {
+              return (
+                <>
+                  <div
+                    key={cmt.id}
+                    data-id={cmt.id}
+                    className={`comment${repliesVisible && replies.rootCommentId === cmt.id
+                        ? " has-replies"
+                        : ""
+                      }${editingId === cmt.id ? " editing" : ""}`}
+                  >
+                    <div className="comment-header">
+                      <div className="nametag">
+                        <div className="comment-pfp pfp">
+                          <img
+                            alt=""
+                            src={`${AVATAR_URL}/${cmt.author!.avatar}`}
+                          />
                         </div>
-                      ) : null}
-                      <div className="reply-btn" onClick={handleReplyClicked}>
-                        <BsReply />
+                        <button type="button" className="username">
+                          {cmt.author!.username}
+                        </button>
                       </div>
-                      <div className="reaction-like">
-                        <BsPlusCircle />
-                        {/*<BsPlusCircleFill />*/}
-                      </div>
-                      <div className="reaction-dislike">
-                        <BsDashCircle />
-                        {/*<BsDashCircleFill />*/}
+                      <div className="comment-reactions">
+                        {cmt.author_id === user?.id ? (
+                          <div className="edit-btn" onClick={handleEditClicked}>
+                            <FiEdit3 />
+                          </div>
+                        ) : null}
+                        <div className="reply-btn" onClick={handleReplyClicked}>
+                          <BsReply />
+                        </div>
+                        <div className="reaction-like">
+                          <BsPlusCircle />
+                          {/*<BsPlusCircleFill />*/}
+                        </div>
+                        <div className="reaction-dislike">
+                          <BsDashCircle />
+                          {/*<BsDashCircleFill />*/}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <p className="comment-content">{cmt.content}</p>
-                  {cmt.reply_count! > 0 ? (
-                    <button
-                      type="button"
-                      className="replies-btn"
-                      onClick={() => showReplies(cmt.id)}
-                    >
-                      {repliesVisible && replies.rootCommentId === cmt.id
-                        ? "Hide Replies"
-                        : `${cmt.reply_count!} ${cmt.reply_count! > 1 ? "Replies" : "Reply"}`}
-                    </button>
-                  ) : null}
-                  {}
-                  <img
-                    alt=""
-                    className="hr sm"
-                    src={`${ASSET_URL}/hr-sm.svg`}
-                  />
-                </div>
-                {repliesVisible && replies.rootCommentId === cmt.id ? (
-                  <div key={`replies-${cmt.id}`} className="replies-view">
-                    {replies.comments.map((reply) => (
-                      <div
-                        key={reply.id}
-                        data-id={reply.id}
-                        className="comment"
-                        style={{ paddingLeft: `${(reply.depth + 1) * 15}px` }}
+                    <p className="comment-content">{cmt.content}</p>
+                    {cmt.reply_count! > 0 ? (
+                      <button
+                        type="button"
+                        className="replies-btn"
+                        onClick={() => showReplies(cmt.id)}
                       >
-                        <div className="comment-header">
-                          <div className="nametag">
-                            <div className="comment-pfp pfp">
-                              <img
-                                alt=""
-                                src={`${AVATAR_URL}/${reply.author!.avatar}`}
-                              />
-                            </div>
-                            <button type="button" className="username">
-                              {reply.author!.username}
-                            </button>
-                          </div>
-                          <div className="comment-reactions">
-                            {reply.author_id === user?.id ? (
-                              <div
-                                className="edit-btn"
-                                onClick={handleEditClicked}
-                              >
-                                <FiEdit3 />
-                              </div>
-                            ) : null}
-                            <div
-                              className="reply-btn"
-                              onClick={handleReplyClicked}
-                            >
-                              <BsReply />
-                            </div>
-                            <div className="reaction-like">
-                              <BsPlusCircle />
-                              {/*<BsPlusCircleFill />*/}
-                            </div>
-                            <div className="reaction-dislike">
-                              <BsDashCircle />
-                              {/*<BsDashCircleFill />*/}
-                            </div>
-                          </div>
-                        </div>
-                        <p className="comment-content">{reply.content}</p>
-                      </div>
-                    ))}
+                        {repliesVisible && replies.rootCommentId === cmt.id
+                          ? "Hide Replies"
+                          : `${cmt.reply_count!} ${cmt.reply_count! > 1 ? "Replies" : "Reply"}`}
+                      </button>
+                    ) : null}
+                    {}
+                    <img
+                      alt=""
+                      className="hr sm"
+                      src={`${ASSET_URL}/hr-sm.svg`}
+                    />
                   </div>
-                ) : null}
-              </>
-            );
-          })}
-      </div>
+                  {repliesVisible && replies.rootCommentId === cmt.id ? (
+                    <div key={`replies-${cmt.id}`} className="replies-view">
+                      {replies.comments.map((reply) => (
+                        <div
+                          key={reply.id}
+                          data-id={reply.id}
+                          className="comment"
+                          style={{ paddingLeft: `${(reply.depth + 1) * 15}px` }}
+                        >
+                          <div className="comment-header">
+                            <div className="nametag">
+                              <div className="comment-pfp pfp">
+                                <img
+                                  alt=""
+                                  src={`${AVATAR_URL}/${reply.author!.avatar}`}
+                                />
+                              </div>
+                              <button type="button" className="username">
+                                {reply.author!.username}
+                              </button>
+                            </div>
+                            <div className="comment-reactions">
+                              {reply.author_id === user?.id ? (
+                                <div
+                                  className="edit-btn"
+                                  onClick={handleEditClicked}
+                                >
+                                  <FiEdit3 />
+                                </div>
+                              ) : null}
+                              <div
+                                className="reply-btn"
+                                onClick={handleReplyClicked}
+                              >
+                                <BsReply />
+                              </div>
+                              <div className="reaction-like">
+                                <BsPlusCircle />
+                                {/*<BsPlusCircleFill />*/}
+                              </div>
+                              <div className="reaction-dislike">
+                                <BsDashCircle />
+                                {/*<BsDashCircleFill />*/}
+                              </div>
+                            </div>
+                          </div>
+                          <p className="comment-content">{reply.content}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </>
+              );
+            })}
+        </div>
+      ) : (
+        <h2>No Comments</h2>
+      )}
       <form className="comment-field" onSubmit={handleSubmit}>
         <div
           className={`action-line${!(replyingTo || editingId) ? " hidden" : ""}`}

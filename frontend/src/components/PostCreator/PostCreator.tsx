@@ -5,6 +5,7 @@ import { type ReactElement, useRef, useState } from "react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import { createPost } from "../../redux/reducers/posts";
 import { useAppDispatch } from "../../redux/util";
+import { useNavigate } from "react-router-dom";
 
 export default function PostCreator() {
   const [caption, setCaption] = useState("");
@@ -13,6 +14,7 @@ export default function PostCreator() {
   const [previewImageURL, setPreviewURL] = useState("");
   const fileInput = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const handleCaptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newCap = e.currentTarget.value;
@@ -66,9 +68,11 @@ export default function PostCreator() {
     const data = await dispatch(createPost({ image, caption }));
 
     // @ts-ignore
-    if (data.message) {
+    if (data.payload.message) {
       // @ts-ignore
-      setError(<ErrorMessage msg={data.message} />);
+      setError(<ErrorMessage msg={data.payload.message} />);
+    } else {
+      navigate("/feed");
     }
   };
 
