@@ -30,8 +30,9 @@ function App() {
     useEffect(() => {
       if (user) return;
 
-      dispatch(restoreUser()).then(() => {
-        if (!user) navigate("/");
+      dispatch(restoreUser()).then((data) => {
+        // @ts-ignore
+        if (data.message) navigate("/");
       });
     }, [navigate]);
     return <Outlet />;
