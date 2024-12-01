@@ -48,6 +48,7 @@ class Post extends Model
                 'post_id',
                 '=',
                 $this->id
-            );
+            )
+            ->whereNull('deleted_at');
     }
 }

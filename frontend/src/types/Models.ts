@@ -24,6 +24,7 @@ export interface Comment extends Model {
   content: string;
   author?: User;
   reply_path: string;
+  deleted_at: Date;
 
   // in general, these two properties are mutually exclusive
   reply_count?: number;

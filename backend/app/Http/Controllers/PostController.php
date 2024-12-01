@@ -108,7 +108,7 @@ class PostController extends Controller
                 'message' => 'Post updated successfully',
                 'post' => $post->jsonSerialize(),
             ]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while updating the post'
             ], 500);
@@ -150,7 +150,7 @@ class PostController extends Controller
             $post->delete();
 
             return response()->json(['message' => 'Post deleted successfully'], 200);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while deleting the post',
             ], 500);

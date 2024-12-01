@@ -58,4 +58,8 @@ Route::prefix('/comment')->group(function () {
     Route::middleware(['auth:sanctum'])
         ->put('/{commentId}', [CommentController::class, 'update'])
         ->where('commentId', '[0-9]+');
+
+    Route::middleware(['auth:sanctum'])
+        ->delete('/{commentId}', [CommentController::class, 'delete'])
+        ->where('commentId', '[0-9]+');
 });

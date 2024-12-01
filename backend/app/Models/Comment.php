@@ -24,8 +24,9 @@ class Comment extends Model
     protected $fillable = [
         'author_id',
         'post_id',
-        'reply_path', // not sure if this should actually be fillable or not
+        'reply_path',
         'content',
+        'deleted_at',
     ];
 
     protected static function booted()

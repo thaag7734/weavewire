@@ -221,4 +221,40 @@ class CommentController extends Controller
 
         return response()->json([...$commentArr, 'author' => $author]);
     }
+
+    /**
+     * Delete a comment
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function delete(Request $request, int $commentId)
+    {
+        $user = $request->user();
+
+        $comment = Comment::query()->whereKey($commentId)->first();
+        if (!$comment) {
+            return response()->json([
+                'message' => 'Comment not found'
+            ], 404);
+        }
+
+        if ($user->id != $comment->author_id) {
+            return response()->json([
+                'message' => 'You are not allowed to delete this post'
+            ], 403);
+        }
+
+        try {
+            $comment->update([
+                'deleted_at' => now(),
+                'content' => 'Comment was deleted',
+            ]);
+
+            return response()->json(['message' => 'Comment deleted successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'An error occurred while deleting the comment',
+            ], 500);
+        }
+    }
 }

@@ -16,6 +16,7 @@ import { csrfFetch } from "../../util/csrfFetch";
 import { RxCross1 } from "react-icons/rx";
 import { FiEdit3 } from "react-icons/fi";
 import { useAppSelector } from "../../redux/util";
+import { GoTrash } from "react-icons/go";
 
 export default function Comments({ postId }: { postId: number }) {
   const user = useAppSelector((state) => state.session.user);
@@ -215,6 +216,50 @@ export default function Comments({ postId }: { postId: number }) {
     ).focus();
   };
 
+  const handleDeleteClicked = async (
+    e: React.MouseEvent<HTMLDivElement>,
+  ): Promise<void> => {
+    e.stopPropagation();
+
+    const target = e.currentTarget;
+
+    // AAAAAAAAAAAAAAAAAAAA
+    const commentId = Number.parseInt(
+      target.parentElement!.parentElement!.parentElement!.dataset.id!,
+    );
+
+    if ([replyingTo, editingId].includes(commentId)) setComment("");
+    if (replyingTo === commentId) setReplyingTo(null);
+    if (editingId === commentId) setEditingId(null);
+
+    const res = await csrfFetch(`/api/comment/${commentId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      if (comments[commentId]) {
+        setComments((prev) =>
+          Object.fromEntries(
+            Object.entries(prev).filter(([_, c]) => c.id !== commentId),
+          ),
+        );
+      } else {
+        setReplies((prev) => ({
+          ...prev,
+          comments: prev.comments.map((c) =>
+            c.id === commentId
+              ? {
+                ...c,
+                content: "Comment was deleted",
+                deleted_at: new Date().toISOString(),
+              }
+              : c,
+          ),
+        }));
+      }
+    }
+  };
+
   return (
     <aside className={`comments${collapsed ? " collapsed" : ""}`}>
       <button
@@ -257,9 +302,20 @@ export default function Comments({ postId }: { postId: number }) {
                       </div>
                       <div className="comment-reactions">
                         {cmt.author_id === user?.id ? (
-                          <div className="edit-btn" onClick={handleEditClicked}>
-                            <FiEdit3 />
-                          </div>
+                          <>
+                            <div
+                              className="trash-btn"
+                              onClick={handleDeleteClicked}
+                            >
+                              <GoTrash />
+                            </div>
+                            <div
+                              className="edit-btn"
+                              onClick={handleEditClicked}
+                            >
+                              <FiEdit3 />
+                            </div>
+                          </>
                         ) : null}
                         <div className="reply-btn" onClick={handleReplyClicked}>
                           <BsReply />
@@ -286,7 +342,6 @@ export default function Comments({ postId }: { postId: number }) {
                           : `${cmt.reply_count!} ${cmt.reply_count! > 1 ? "Replies" : "Reply"}`}
                       </button>
                     ) : null}
-                    {}
                     <img
                       alt=""
                       className="hr sm"
@@ -302,43 +357,53 @@ export default function Comments({ postId }: { postId: number }) {
                           className="comment"
                           style={{ paddingLeft: `${(reply.depth + 1) * 15}px` }}
                         >
-                          <div className="comment-header">
-                            <div className="nametag">
-                              <div className="comment-pfp pfp">
-                                <img
-                                  alt=""
-                                  src={`${AVATAR_URL}/${reply.author!.avatar}`}
-                                />
-                              </div>
-                              <button type="button" className="username">
-                                {reply.author!.username}
-                              </button>
-                            </div>
-                            <div className="comment-reactions">
-                              {reply.author_id === user?.id ? (
-                                <div
-                                  className="edit-btn"
-                                  onClick={handleEditClicked}
-                                >
-                                  <FiEdit3 />
+                          {reply.deleted_at === null ? (
+                            <div className="comment-header">
+                              <div className="nametag">
+                                <div className="comment-pfp pfp">
+                                  <img
+                                    alt=""
+                                    src={`${AVATAR_URL}/${reply.author!.avatar}`}
+                                  />
                                 </div>
-                              ) : null}
-                              <div
-                                className="reply-btn"
-                                onClick={handleReplyClicked}
-                              >
-                                <BsReply />
+                                <button type="button" className="username">
+                                  {reply.author!.username}
+                                </button>
                               </div>
-                              <div className="reaction-like">
-                                <BsPlusCircle />
-                                {/*<BsPlusCircleFill />*/}
-                              </div>
-                              <div className="reaction-dislike">
-                                <BsDashCircle />
-                                {/*<BsDashCircleFill />*/}
+                              <div className="comment-reactions">
+                                {reply.author_id === user?.id ? (
+                                  <>
+                                    <div
+                                      className="trash-btn"
+                                      onClick={handleDeleteClicked}
+                                    >
+                                      <GoTrash />
+                                    </div>
+                                    <div
+                                      className="edit-btn"
+                                      onClick={handleEditClicked}
+                                    >
+                                      <FiEdit3 />
+                                    </div>
+                                  </>
+                                ) : null}
+                                <div
+                                  className="reply-btn"
+                                  onClick={handleReplyClicked}
+                                >
+                                  <BsReply />
+                                </div>
+                                <div className="reaction-like">
+                                  <BsPlusCircle />
+                                  {/*<BsPlusCircleFill />*/}
+                                </div>
+                                <div className="reaction-dislike">
+                                  <BsDashCircle />
+                                  {/*<BsDashCircleFill />*/}
+                                </div>
                               </div>
                             </div>
-                          </div>
+                          ) : null}
                           <p className="comment-content">{reply.content}</p>
                         </div>
                       ))}

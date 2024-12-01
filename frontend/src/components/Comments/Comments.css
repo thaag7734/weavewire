@@ -15,7 +15,12 @@
     transform: translateX(100%);
     width: 0;
 
+    & h2 {
+      color: transparent;
+    }
+
     >.collapse-btn {
+      display: block;
       transform: translateX(400px);
     }
   }
@@ -84,10 +89,16 @@
           align-items: flex-end;
           font-size: 1.1rem;
 
+          /*
+           * purely out of spite for my own decisions i will never give these
+           * a shared class, the list will simply continue to get longer until
+           * i make this a dropdown menu
+           */
           >.reaction-like,
           >.reaction-dislike,
           >.reply-btn,
-          >.edit-btn {
+          >.edit-btn,
+          >.trash-btn {
             height: 1.1rem;
             transition: filter 0.05s ease;
             position: relative;
@@ -158,6 +169,16 @@
           >.edit-btn {
             &:hover {
               color: #fff;
+            }
+
+            &:active::before {
+              border: 1px solid;
+            }
+          }
+
+          >.trash-btn {
+            &:hover {
+              color: #f00;
             }
 
             &:active::before {
