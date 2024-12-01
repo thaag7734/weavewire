@@ -1,7 +1,7 @@
 interface Model {
   id: number;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface User extends Model {
@@ -24,7 +24,7 @@ export interface Comment extends Model {
   content: string;
   author?: User;
   reply_path: string;
-  deleted_at: Date;
+  deleted_at: string;
 
   // in general, these two properties are mutually exclusive
   reply_count?: number;
