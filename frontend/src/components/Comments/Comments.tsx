@@ -320,14 +320,16 @@ export default function Comments({ postId }: { postId: number }) {
 												<div className="reply-btn" onClick={handleReplyClicked}>
 													<BsReply />
 												</div>
-												<div className="reaction-like">
+												{/*<div className="reaction-like">
 													<BsPlusCircle />
-													{/*<BsPlusCircleFill />*/}
+													{/*<BsPlusCircleFill />*/
+												/*}
 												</div>
 												<div className="reaction-dislike">
 													<BsDashCircle />
-													{/*<BsDashCircleFill />*/}
-												</div>
+													{/*<BsDashCircleFill />*/
+												/*}
+												</div>*/}
 											</div>
 										</div>
 										<p className="comment-content">{cmt.content}</p>
@@ -393,14 +395,16 @@ export default function Comments({ postId }: { postId: number }) {
 																>
 																	<BsReply />
 																</div>
-																<div className="reaction-like">
+																{/*<div className="reaction-like">
 																	<BsPlusCircle />
-																	{/*<BsPlusCircleFill />*/}
+																	{/*<BsPlusCircleFill />*/
+																/*}
 																</div>
 																<div className="reaction-dislike">
 																	<BsDashCircle />
-																	{/*<BsDashCircleFill />*/}
-																</div>
+																	{/*<BsDashCircleFill />*/
+																/*}
+																</div>*/}
 															</div>
 														</div>
 													) : null}
