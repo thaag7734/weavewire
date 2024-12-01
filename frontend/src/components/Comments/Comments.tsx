@@ -296,7 +296,13 @@ export default function Comments({ postId }: { postId: number }) {
 														src={`${AVATAR_URL}/${cmt.author!.avatar}`}
 													/>
 												</div>
-												<button type="button" className="username">
+												<button
+													type="button"
+													className="username"
+													onClick={() =>
+														alert("Profile page not yet implemented")
+													}
+												>
 													{cmt.author!.username}
 												</button>
 											</div>
@@ -368,7 +374,13 @@ export default function Comments({ postId }: { postId: number }) {
 																		src={`${AVATAR_URL}/${reply.author!.avatar}`}
 																	/>
 																</div>
-																<button type="button" className="username">
+																<button
+																	type="button"
+																	className="username"
+																	onClick={() =>
+																		alert("Profile page not yet implemented")
+																	}
+																>
 																	{reply.author!.username}
 																</button>
 															</div>

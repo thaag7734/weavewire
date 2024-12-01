@@ -46,7 +46,11 @@ const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
                   src={`${AVATAR_URL}/${post.author!.avatar || "nopfp.png"}`}
                 />
               </div>
-              <button type="button" className="username">
+              <button
+                type="button"
+                className="username"
+                onClick={() => alert("Profile page not yet implemented")}
+              >
                 {post.author!.username}
               </button>
             </div>

@@ -23,7 +23,11 @@ export default function Sidebar() {
         <div className="summary-text">
           {user && (
             <>
-              <button type="button" className="username">
+              <button
+                type="button"
+                className="username"
+                onClick={() => alert("Profile page not yet implemented")}
+              >
                 {user.username}
               </button>
               <span className="summary-status">{user.status}</span>
@@ -34,16 +38,25 @@ export default function Sidebar() {
       <img alt="" className="hr" src={`${ASSET_URL}/hr.svg`} />
       <nav>
         <div className="nav-top">
-          <button type="button" onClick={() => alert("Not Implemented")}>
+          <button
+            type="button"
+            onClick={() => alert("Popular posts feed not yet implemented")}
+          >
             Popular
           </button>
           <button type="button" onClick={() => navigate("/feed")}>
             All Posts
           </button>
-          <button type="button" onClick={() => alert("Not Implemented")}>
+          <button
+            type="button"
+            onClick={() => alert("Subscriptions not yet implemented")}
+          >
             Subscriptions
           </button>
-          <button type="button" onClick={() => alert("Not Implemented")}>
+          <button
+            type="button"
+            onClick={() => alert("Chat not yet implemented")}
+          >
             Chat
           </button>
         </div>
