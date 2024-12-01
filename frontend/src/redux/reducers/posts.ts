@@ -16,6 +16,7 @@ const GET_RECENT_POSTS = `${PREFIX}/getRecentPosts`;
 const GET_POST = `${PREFIX}/getPost`;
 const GET_USER_POSTS = `${PREFIX}/getUserPosts`;
 const CREATE_POST = `${PREFIX}/createPost`;
+const DELETE_POST = `${PREFIX}/deletePost`;
 
 export const getRecentPosts = createAppAsyncThunk(
   GET_RECENT_POSTS,
@@ -84,6 +85,23 @@ export const createPost = createAppAsyncThunk(
   },
 );
 
+export const deletePost = createAppAsyncThunk(
+  DELETE_POST,
+  async (postId: number, { fulfillWithValue, rejectWithValue }) => {
+    const res = await csrfFetch(`/api/post/${postId}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return rejectWithValue(data);
+    }
+
+    return fulfillWithValue({ ...data, postId });
+  },
+);
+
 export const selectPostById = createSelector(
   [
     (state: RootState) => state.posts,
@@ -114,6 +132,9 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(deletePost.fulfilled, (state, action) => {
+      delete state.posts[action.payload.postId];
+    });
     builder
       .addMatcher(
         (action) => isAnyOf(getPost.fulfilled, createPost.fulfilled)(action),

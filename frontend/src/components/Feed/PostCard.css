@@ -1,85 +1,152 @@
 .post-scroll-container {
-	/* TODO this needs a mq */
-	width: 650px;
-	min-height: 100%;
-	max-height: 100%;
-	padding: 15px 0;
-	margin: 0;
-	scroll-snap-align: start;
-	scroll-snap-stop: always;
+  /* TODO this needs a mq */
+  width: 650px;
+  min-height: 100%;
+  max-height: 100%;
+  padding: 15px 0;
+  margin: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 
 .post-card {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
 
-	> .op-credit {
-		height: 50px;
-		width: 100%;
-		display: flex;
-		flex-direction: row;
-		align-items: center;
-		margin-bottom: 10px;
+  >.post-card-header {
+    height: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
 
-		> .pfp {
-			position: relative;
-			left: -10px;
-		}
-	}
+    >.op-info {
+      height: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
 
-	> .post-card-img {
-		padding: 0;
-		height: 80%;
-		transition: clip-path 0.05s ease;
-		border-radius: inherit;
+      >.pfp {
+        position: relative;
+        left: -10px;
+      }
+    }
 
-		&::before,
-		&::after {
-			width: calc(100% + 2px);
-			height: calc(100% + 2px);
-			left: -1px;
-			top: -1px;
-		}
+    >.post-actions {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
 
-		&:hover::before,
-		&:hover::after {
-			clip-path: inset(40% -10px 40% -10px);
-		}
+      >.delete-btn,
+      >.edit-btn {
+        height: 1.5rem;
+        font-size: 1.25rem;
+        transition: filter 0.05s ease;
+        position: relative;
 
-		&:active::before,
-		&:active::after {
-			clip-path: inset(-10px -10px -10px -10px);
-		}
+        &:hover {
+          cursor: pointer;
+          filter: brightness(70%);
+        }
 
-		> .post-img-wrapper {
-			overflow: visible;
-			height: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			border-radius: inherit;
-			overflow: hidden;
+        &:active {
+          filter: none;
+        }
 
-			> img {
-				min-height: 100%;
-				max-width: 100%;
-				border-radius: inherit;
-				object-fit: cover;
-			}
-		}
-	}
+        &::before {
+          content: "";
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(2px);
+          height: 100%;
+          width: 100%;
+          pointer-events: none;
+        }
 
-	> .post-details {
-		margin: 15px 0;
-		max-height: 20%;
-		overflow-y: auto;
+        &:first-child {
+          margin-right: 5px;
+        }
 
-		> .post-caption {
-			text-overflow: ellipsis;
-			white-space: wrap;
-		}
-	}
+        &.selected {
+          &:hover {
+            color: inherit;
+          }
+        }
+      }
+
+      >.delete-btn {
+        &:hover {
+          color: #f00;
+        }
+
+        &:active::before {
+          border: 1px solid #f00;
+        }
+      }
+
+      >.edit-btn {
+        &:active::before {
+          border: 1px solid var(--c-lgray);
+        }
+      }
+    }
+  }
+
+  >.post-card-img {
+    padding: 0;
+    height: 80%;
+    transition: clip-path 0.05s ease;
+    border-radius: inherit;
+
+    &::before,
+    &::after {
+      width: calc(100% + 2px);
+      height: calc(100% + 2px);
+      left: -1px;
+      top: -1px;
+    }
+
+    &:hover::before,
+    &:hover::after {
+      clip-path: inset(40% -10px 40% -10px);
+    }
+
+    &:active::before,
+    &:active::after {
+      clip-path: inset(-10px -10px -10px -10px);
+    }
+
+    >.post-img-wrapper {
+      overflow: visible;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: inherit;
+      overflow: hidden;
+
+      >img {
+        min-height: 100%;
+        max-width: 100%;
+        border-radius: inherit;
+        object-fit: cover;
+      }
+    }
+  }
+
+  >.post-details {
+    margin: 15px 0;
+    max-height: 20%;
+    overflow-y: auto;
+
+    >.post-caption {
+      text-overflow: ellipsis;
+      white-space: wrap;
+    }
+  }
 }
