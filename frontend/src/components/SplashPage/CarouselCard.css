@@ -1,33 +1,36 @@
-  .carousel-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    /* TODO this needs a media query */
-    min-width: 400px;
-    max-width: 400px;
-    margin-right: 5vw;
+.carousel-card {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	height: 100%;
+	/* TODO this needs a media query */
+	min-width: 400px;
+	max-width: 400px;
+	margin-right: 5vw;
 
-    >.carousel-card-img {
-      min-height: 80%;
-      max-height: 80%;
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: inherit;
+	> .carousel-card-img {
+		min-height: 80%;
+		max-height: 80%;
+		width: 100%;
+		max-width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: inherit;
 
-      >img {
-        height: 100%;
-        border-radius: inherit;
-        aspect-ratio: initial;
-        object-fit: cover;
-      }
-    }
+		> img {
+			height: 100%;
+			max-height: 100%;
+			max-width: 100%;
+			border-radius: inherit;
+			aspect-ratio: initial;
+			object-fit: cover;
+		}
+	}
 
-    >.carousel-card-caption {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
+	> .carousel-card-caption {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}

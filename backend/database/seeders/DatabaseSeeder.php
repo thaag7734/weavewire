@@ -34,6 +34,8 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      * TODO this is abhorrently slow and desperately needs optimized
+     * TODO TODO this NEEDS optimized like last week, i'm talking 40+mins to seed,
+     * i've been awake for 31 hours and i'm gonna be here for like 3 more
      */
     public function run(): void
     {
@@ -41,7 +43,7 @@ class DatabaseSeeder extends Seeder
             'username' => 'system',
             'email' => 'system@tylerhaag.dev',
             'password' => 'password',
-            'status' => 'uwu',
+            'status' => 'beep boop uwu',
         ]);
 
         $demoUser = User::factory()->create([
@@ -55,6 +57,8 @@ class DatabaseSeeder extends Seeder
             ->count(30)
             ->create();
 
+        $users->concat([$demoUser, $sysUser]);
+
         $posts = Post::factory()
             ->count(100)
             ->state(fn() => [
@@ -62,19 +66,19 @@ class DatabaseSeeder extends Seeder
             ])
             ->create();
 
-        $posts->concat(Post::factory()->count(10)->withUser($sysUser)->create());
-        $posts->concat(Post::factory()->count(10)->withUser($demoUser)->create());
+        /*$posts->concat(Post::factory()->count(5)->withUser($sysUser)->create());*/
+        $posts->concat(Post::factory()->count(5)->withUser($demoUser)->create());
 
         foreach ($posts as $post) {
-            Reaction::factory()
-                ->count(random_int(0, 50))
-                ->state(fn() => [
-                    'post_id' => $post->id,
-                    'user_id' => $users->random()->id,
-                ])
-                ->create();
+            /*Reaction::factory()*/
+            /*    ->count(random_int(0, 50))*/
+            /*    ->state(fn() => [*/
+            /*        'post_id' => $post->id,*/
+            /*        'user_id' => $users->random()->id,*/
+            /*    ])*/
+            /*    ->create();*/
             $comments = Comment::factory()
-                ->count(random_int(0, 20))
+                ->count(random_int(0, 10))
                 ->state(fn() => [
                     'post_id' => $post->id,
                     'author_id' => $users->random()->id,

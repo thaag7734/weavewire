@@ -95,8 +95,13 @@ export default function SplashPage() {
       </div>
       <div className="splash-cta-group">
         <div className="splash-cta">
-          <h1>Weavewire</h1>
-          <p>ermmmmm make an account, stinky</p>
+          <h1>Enter the Weave.</h1>
+          <p>
+            A canvas of memories and moments awaits you on Weavewire, where each
+            interaction contributes to a tapestry of shared experiences.
+            Discover, create, and connect with others who are shaping their
+            stories in this virtual community.
+          </p>
         </div>
         <div className="splash-login card">
           <h2>{isSignupForm ? "Register" : "Login"}</h2>

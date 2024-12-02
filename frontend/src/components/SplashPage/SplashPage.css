@@ -41,6 +41,14 @@
 		padding: 20px;
 		background-color: var(--c-dgray);
 
+		> .splash-cta {
+			width: 40%;
+
+			> p {
+				font-size: 1.3rem;
+			}
+		}
+
 		> .splash-login {
 			width: 40%;
 			height: fit-content;

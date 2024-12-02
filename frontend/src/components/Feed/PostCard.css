@@ -1,5 +1,4 @@
 .post-scroll-container {
-  /* TODO this needs a mq */
   width: 650px;
   min-height: 100%;
   max-height: 100%;
@@ -7,6 +6,14 @@
   margin: 0;
   scroll-snap-align: start;
   scroll-snap-stop: always;
+
+  @media only screen and (max-width: 1500px) {
+    width: 500px;
+  }
+
+  @media only screen and (max-width: 1337px) {
+    width: 400px;
+  }
 }
 
 .post-card {
@@ -142,6 +149,7 @@
   >.post-details {
     margin: 15px 0;
     max-height: 20%;
+    min-height: 10%;
     overflow-y: auto;
 
     >.post-caption {
