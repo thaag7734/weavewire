@@ -67,7 +67,13 @@ const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
               ) : null}
             </div>
           </div>
-          <button type="button" className="post-card-img">
+          <a
+            title="Open image in new tab"
+            target="_blank"
+            rel="noreferrer"
+            className="post-card-img"
+            href={`https://static.weavewire.tylerhaag.dev/images/${post.image_file}`}
+          >
             {post ? ( // TODO figure out a way to allow users to provide alt text
               <div className="post-img-wrapper">
                 <img
@@ -78,7 +84,7 @@ const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
             ) : (
               <h2>Loading...</h2>
             )}
-          </button>
+          </a>
           <div className="post-details">
             {post && (
               <>
