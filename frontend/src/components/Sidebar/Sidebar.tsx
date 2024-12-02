@@ -1,12 +1,14 @@
-import { useAppSelector } from "../../redux/util";
+import { useAppDispatch, useAppSelector } from "../../redux/util";
 import "./Sidebar.css";
 import { ASSET_URL, AVATAR_URL } from "../../appConfig";
 import { useLocation, useNavigate } from "react-router-dom";
+import { logout } from "../../redux/reducers/session";
 
 export default function Sidebar() {
   const user = useAppSelector((state) => state.session.user);
   const navigate = useNavigate();
   const location = useLocation();
+  const dispatch = useAppDispatch();
 
   return (
     <div className="sidebar">
@@ -58,6 +60,13 @@ export default function Sidebar() {
             onClick={() => alert("Chat not yet implemented")}
           >
             Chat
+          </button>
+          {/* logout button should be moved to literally anywhere else */}
+          <button
+            type="button"
+            onClick={() => dispatch(logout()).then(() => navigate("/"))}
+          >
+            Logout
           </button>
         </div>
         {location.pathname !== "/new_post" ? (

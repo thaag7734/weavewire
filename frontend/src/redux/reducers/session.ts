@@ -31,15 +31,17 @@ export const login = createAppAsyncThunk(
 
 export const logout = createAppAsyncThunk(
   LOGOUT,
-  async (currentUser: User, { fulfillWithValue, rejectWithValue }) => {
+  async (_: never, { fulfillWithValue, rejectWithValue }) => {
     const res = await csrfFetch("/auth/logout", { method: "POST" });
 
     if (!res.ok) {
-      return rejectWithValue({ 'message': `Logout failed with code ${res.status}` });
+      return rejectWithValue({
+        message: `Logout failed with code ${res.status}`,
+      });
     }
 
-    return fulfillWithValue({ 'message': `Logged out user ${currentUser.username}` });
-  }
+    return fulfillWithValue({ message: "Logged out" });
+  },
 );
 
 export const restoreUser = createAppAsyncThunk(
@@ -48,11 +50,13 @@ export const restoreUser = createAppAsyncThunk(
     const res = await csrfFetch("/api/user");
 
     if (!res.ok) {
-      return rejectWithValue({ "message": `Failed to restore user: HTTP ${res.status}` });
+      return rejectWithValue({
+        message: `Failed to restore user: HTTP ${res.status}`,
+      });
     }
 
     return fulfillWithValue(await res.json());
-  }
+  },
 );
 
 export interface SessionState {

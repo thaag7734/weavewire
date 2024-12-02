@@ -42,7 +42,7 @@ export default function Feed({
     }
 
     return () => observer?.disconnect();
-  }, [posts]);
+  }, [cards]);
 
   useEffect(() => {
     //console.log(
@@ -67,6 +67,9 @@ export default function Feed({
       setFetchDebounce(false);
     });
     setPage((prev) => prev + 1);
+
+    // i'm aware these deps are wrong, but i don't think doing it correctly is possible here
+    // without murdering the server with an infinite fetch loop
   }, [currentPostId]);
 
   return (
