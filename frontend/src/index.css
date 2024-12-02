@@ -1,7 +1,7 @@
 @font-face {
 	font-family: "Computerfont";
-	src: url("fonts/Computerfont.woff2") format("woff2"),
-		url("fonts/Computerfont.woff") format("woff");
+	src: url("/fonts/Computerfont.woff2") format("woff2"),
+		url("/fonts/Computerfont.woff") format("woff");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -9,8 +9,8 @@
 
 @font-face {
 	font-family: "CyberpunkWaifus";
-	src: url("fonts/CyberpunkWaifus.woff2") format("woff2"),
-		url("fonts/CyberpunkWaifus.woff") format("woff");
+	src: url("/fonts/CyberpunkWaifus.woff2") format("woff2"),
+		url("/fonts/CyberpunkWaifus.woff") format("woff");
 	font-weight: 500;
 	font-style: normal;
 	font-display: swap;

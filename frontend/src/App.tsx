@@ -1,6 +1,4 @@
-import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+import { useEffect } from "react";
 import "./App.css";
 import {
   createBrowserRouter,
@@ -58,6 +56,15 @@ function App() {
         },
         {
           path: "/new_post",
+          element: (
+            <div className="triple-pane">
+              <Sidebar />
+              <PostCreator />
+            </div>
+          ),
+        },
+        {
+          path: "/edit/:postId",
           element: (
             <div className="triple-pane">
               <Sidebar />

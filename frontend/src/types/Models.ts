@@ -15,7 +15,7 @@ export interface User extends Model {
 export interface Post extends Model {
   author_id: number;
   image_file: string;
-  caption?: string;
+  caption: string;
   author?: User;
 }
 

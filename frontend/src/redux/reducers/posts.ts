@@ -7,7 +7,7 @@ import {
 import type { Post } from "../../types/Models";
 import { createAppAsyncThunk } from "../util";
 import type { RootState } from "../store";
-import type { PostForm } from "../../types/Forms";
+import type { PostForm, UpdatePostForm } from "../../types/Forms";
 import { csrfFetch } from "../../util/csrfFetch";
 
 const PREFIX = "posts";
@@ -16,6 +16,7 @@ const GET_RECENT_POSTS = `${PREFIX}/getRecentPosts`;
 const GET_POST = `${PREFIX}/getPost`;
 const GET_USER_POSTS = `${PREFIX}/getUserPosts`;
 const CREATE_POST = `${PREFIX}/createPost`;
+const UPDATE_POST = `${PREFIX}/updatePost`;
 const DELETE_POST = `${PREFIX}/deletePost`;
 
 export const getRecentPosts = createAppAsyncThunk(
@@ -85,6 +86,25 @@ export const createPost = createAppAsyncThunk(
   },
 );
 
+export const updatePost = createAppAsyncThunk(
+  UPDATE_POST,
+  async (form: UpdatePostForm, { fulfillWithValue, rejectWithValue }) => {
+    const res = await csrfFetch(`/api/post/${form.postId}`, {
+      method: "PUT",
+      body: JSON.stringify({ caption: form.caption }),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      return rejectWithValue(data);
+    }
+
+    return fulfillWithValue(data);
+  },
+);
+
 export const deletePost = createAppAsyncThunk(
   DELETE_POST,
   async (postId: number, { fulfillWithValue, rejectWithValue }) => {
@@ -137,7 +157,12 @@ export const postsSlice = createSlice({
     });
     builder
       .addMatcher(
-        (action) => isAnyOf(getPost.fulfilled, createPost.fulfilled)(action),
+        (action) =>
+          isAnyOf(
+            getPost.fulfilled,
+            createPost.fulfilled,
+            updatePost.fulfilled,
+          )(action),
         (state, action: PayloadAction<Post>) => {
           state.posts[action.payload.id] = action.payload;
         },

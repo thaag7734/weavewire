@@ -13,3 +13,8 @@ export interface PostForm {
   caption: string;
   image: Blob;
 }
+
+export interface UpdatePostForm {
+  postId: number;
+  caption: string;
+}

@@ -1,11 +1,17 @@
 import { FaSquarePlus } from "react-icons/fa6";
 import "./PostCreator.css";
 import "../Feed/PostCard.css";
-import { type ReactElement, useRef, useState } from "react";
+import { type ReactElement, useEffect, useRef, useState } from "react";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import { createPost } from "../../redux/reducers/posts";
-import { useAppDispatch } from "../../redux/util";
-import { useNavigate } from "react-router-dom";
+import {
+  createPost,
+  getPost,
+  selectPostById,
+  updatePost,
+} from "../../redux/reducers/posts";
+import { useAppDispatch, useAppSelector } from "../../redux/util";
+import { useNavigate, useParams } from "react-router-dom";
+import { POST_IMG_URL } from "../../appConfig";
 
 export default function PostCreator() {
   const [caption, setCaption] = useState("");
@@ -13,8 +19,20 @@ export default function PostCreator() {
   const [image, setImage] = useState<File | null>(null);
   const [previewImageURL, setPreviewURL] = useState("");
   const fileInput = useRef<HTMLInputElement | null>(null);
+  const { postId } = useParams();
+  const post = useAppSelector((state) =>
+    postId ? selectPostById(state, Number.parseInt(postId)) : undefined,
+  );
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (postId && !post) {
+      dispatch(getPost(Number.parseInt(postId)));
+    } else if (post) {
+      setCaption(post.caption);
+    }
+  }, [post, postId, dispatch]);
 
   const handleCaptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newCap = e.currentTarget.value;
@@ -63,9 +81,14 @@ export default function PostCreator() {
 
   const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (!image) return; // this is not really necessary
 
-    const data = await dispatch(createPost({ image, caption }));
+    // this is so cursed but it's literally always the best option
+    const thunk = !postId // @ts-ignore stop complaining about image being null (it's not)
+      ? createPost({ image, caption })
+      : updatePost({ postId: Number.parseInt(postId), caption });
+
+    // @ts-ignore once again, the image is not and cannot be null
+    const data = await dispatch(thunk);
 
     // @ts-ignore
     if (data.payload.message) {
@@ -79,20 +102,26 @@ export default function PostCreator() {
   return (
     <div className="post-creator">
       <div className="card post-card new-post-card">
-        <button
-          type="button"
-          className="post-card-img"
-          title="Upload image"
-          onClick={upload}
-        >
-          {image == null ? (
-            <FaSquarePlus />
-          ) : (
-            <div className="post-img-wrapper">
-              <img src={previewImageURL} alt="Preview" />
-            </div>
-          )}
-        </button>
+        {!postId ? (
+          <button
+            type="button"
+            className="post-card-img"
+            title="Upload image"
+            onClick={upload}
+          >
+            {image == null ? (
+              <FaSquarePlus />
+            ) : (
+              <div className="post-img-wrapper">
+                <img src={previewImageURL} alt="Preview" />
+              </div>
+            )}
+          </button>
+        ) : (
+          <div className="post-img-wrapper">
+            <img src={`${POST_IMG_URL}/${post?.image_file}`} alt="Preview" />
+          </div>
+        )}
         <input
           type="file"
           ref={fileInput}
@@ -115,7 +144,7 @@ export default function PostCreator() {
             className="submit-post"
             type="submit"
             onClick={handleSubmit}
-            disabled={caption.length > 512 || !image}
+            disabled={caption.length > 512 || !(image || postId)}
           >
             Post
           </button>

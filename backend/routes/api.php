@@ -13,30 +13,30 @@ Route::prefix('/user')->group(function () {
         });
 
     Route::get('/{userId}', [UserController::class, 'show'])
-        ->where('userId', '[0-9]+');
+        ->where('userId', '^[0-9]+$');
 
     Route::get('/{userId}/posts', [UserController::class, 'showPosts'])
-        ->where('userId', '[0-9]+');
+        ->where('userId', '^[0-9]+$');
 });
 
 Route::prefix('/post')->group(function () {
     Route::get('/{postId}', [PostController::class, 'show'])
-        ->where('postId', '[0-9]+');
+        ->where('postId', '^[0-9]+$');
 
     Route::get('/{postId}/comments', [PostController::class, 'showComments'])
-        ->where('postId', '[0-9]+');
+        ->where('postId', '^[0-9]+$');
 
     Route::middleware(['auth:sanctum'])
         ->post('/{postId}/comments', [CommentController::class, 'store'])
-        ->where('postId', '[0-9]+');
+        ->where('postId', '^[0-9]+$');
 
     Route::middleware(['auth:sanctum'])
         ->put('/{postId}', [PostController::class, 'update'])
-        ->where('postId', '[0-9]+');
+        ->where('postId', '^[0-9]+$');
 
     Route::middleware(['auth:sanctum'])
         ->delete('/{postId}', [PostController::class, 'delete'])
-        ->where('postId', '[0-9]+');
+        ->where('postId', '^[0-9]+$');
 
     Route::get('/all', [PostController::class, 'showAll']);
 
@@ -46,20 +46,20 @@ Route::prefix('/post')->group(function () {
 
 Route::prefix('/comment')->group(function () {
     Route::get('/{commentId}', [CommentController::class, 'show'])
-        ->where('commentId', '[0-9]+');
+        ->where('commentId', '^[0-9]+$');
 
     Route::get('/{commentId}/replies', [CommentController::class, 'showReplies'])
-        ->where('commentId', '[0-9]+');
+        ->where('commentId', '^[0-9]+$');
 
     Route::middleware(['auth:sanctum'])
         ->post('/{commentId}/replies', [CommentController::class, 'storeReply'])
-        ->where('commentId', '[0-9]+');
+        ->where('commentId', '^[0-9]+$');
 
     Route::middleware(['auth:sanctum'])
         ->put('/{commentId}', [CommentController::class, 'update'])
-        ->where('commentId', '[0-9]+');
+        ->where('commentId', '^[0-9]+$');
 
     Route::middleware(['auth:sanctum'])
         ->delete('/{commentId}', [CommentController::class, 'delete'])
-        ->where('commentId', '[0-9]+');
+        ->where('commentId', '^[0-9]+$');
 });

@@ -1,13 +1,6 @@
 import { useEffect, useState } from "react";
 import type React from "react";
-import {
-	BsDashCircle,
-	BsDashCircleFill,
-	BsPlusCircle,
-	BsPlusCircleFill,
-	BsReply,
-	BsSend,
-} from "react-icons/bs";
+import { BsReply, BsSend } from "react-icons/bs";
 import { VscCommentDiscussion } from "react-icons/vsc";
 import { ASSET_URL, AVATAR_URL } from "../../appConfig";
 import type { Comment } from "../../types/Models";

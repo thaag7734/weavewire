@@ -85,13 +85,15 @@ class PostController extends Controller
             ], 401);
         }
 
+
         /** @var \App\Models\Post $Post */
-        $post = Post::query()->whereKey($postId)->first();
+        $post = Post::with('author')->find($postId);
         if (!$post) {
             return response()->json([
                 'message' => 'Post not found',
             ], 404);
         }
+
 
         if ($post->author_id != $user->id) {
             return response()->json([
@@ -104,10 +106,7 @@ class PostController extends Controller
                 'caption' => $validated['caption'],
             ]);
 
-            return response()->json([
-                'message' => 'Post updated successfully',
-                'post' => $post->jsonSerialize(),
-            ]);
+            return response()->json($post);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'An error occurred while updating the post'

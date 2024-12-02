@@ -120,22 +120,22 @@
     &:active::after {
       clip-path: inset(-10px -10px -10px -10px);
     }
+  }
 
-    >.post-img-wrapper {
-      overflow: visible;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  & .post-img-wrapper {
+    overflow: visible;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: inherit;
+    overflow: hidden;
+
+    >img {
+      min-height: 100%;
+      max-width: 100%;
       border-radius: inherit;
-      overflow: hidden;
-
-      >img {
-        min-height: 100%;
-        max-width: 100%;
-        border-radius: inherit;
-        object-fit: cover;
-      }
+      object-fit: cover;
     }
   }
 
