@@ -28,9 +28,12 @@ function App() {
     useEffect(() => {
       if (user) return;
 
-      dispatch(restoreUser()).then((data) => {
+      dispatch(restoreUser()).then((action) => {
         // @ts-ignore
-        if (data.message) navigate("/");
+        if (action.type === "session/restoreUser/rejected") {
+          navigate("/");
+          return;
+        }
       });
     }, [navigate]);
     return <Outlet />;

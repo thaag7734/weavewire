@@ -8,80 +8,92 @@ import { login, restoreUser } from "../../redux/reducers/session";
 import { useNavigate } from "react-router-dom";
 
 export default function SplashPage() {
-	const posts = useAppSelector((state) => selectOrderedPosts(state));
-	const user = useAppSelector((state) => state.session.user);
-	const [email, setEmail] = useState<string>("");
-	const [password, setPassword] = useState<string>("");
-	const dispatch = useAppDispatch();
-	const navigate = useNavigate();
+  const posts = useAppSelector((state) => selectOrderedPosts(state));
+  const user = useAppSelector((state) => state.session.user);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		if (user) navigate("/feed");
-	}, [user, navigate]);
+  useEffect(() => {
+    if (user) navigate("/feed");
+  }, [user, navigate]);
 
-	useEffect(() => {
-		dispatch(restoreUser());
-		dispatch(getRecentPosts());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(restoreUser());
+    dispatch(getRecentPosts());
+  }, [dispatch]);
 
-	const handleLogin = async (e: FormEvent) => {
-		e.preventDefault();
+  const handleLogin = async (e: FormEvent) => {
+    e.preventDefault();
 
-		dispatch(login({ email, password }));
-	};
+    dispatch(login({ email, password }));
+  };
 
-	const handleAnimEnd = (e: React.AnimationEvent) => {
-		const target = e.currentTarget;
+  const handleAnimEnd = (e: React.AnimationEvent) => {
+    const target = e.currentTarget;
 
-		e.currentTarget.parentElement?.appendChild(target);
-	};
+    e.currentTarget.parentElement?.appendChild(target);
+  };
 
-	return (
-		<div className="splash">
-			<div className="carousel-group" onAnimationEnd={handleAnimEnd}>
-				<div className="carousel">
-					{posts.map((post) => (
-						<CarouselCard key={post.id} postId={post.id} />
-					))}
-				</div>
-				<div className="carousel">
-					{posts.map((post) => (
-						<CarouselCard key={post.id} postId={post.id} />
-					))}
-				</div>
-			</div>
-			<div className="splash-cta-group">
-				<div className="splash-cta">
-					<h1>Weavewire</h1>
-					<p>ermmmmm make an account, stinky</p>
-				</div>
-				<div className="splash-login card">
-					<h2>Login</h2>
-					<form onSubmit={handleLogin}>
-						<div className="input-group">
-							<label htmlFor="email">Email</label>
-							<div className="input">
-								<input
-									type="email"
-									value={email}
-									onChange={(e) => setEmail(e.currentTarget.value)}
-								/>
-							</div>
-						</div>
-						<div className="input-group">
-							<label htmlFor="password">Password</label>
-							<div className="input">
-								<input
-									type="password"
-									value={password}
-									onChange={(e) => setPassword(e.currentTarget.value)}
-								/>
-							</div>
-						</div>
-						<button type="submit">Login</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	);
+  const demoLogin = () => {
+    dispatch(login({ email: "demo@tylerhaag.dev", password: "password" }));
+  };
+
+  return (
+    <div className="splash">
+      <div className="carousel-group" onAnimationEnd={handleAnimEnd}>
+        <div className="carousel">
+          {posts.map((post) => (
+            <CarouselCard key={post.id} postId={post.id} />
+          ))}
+        </div>
+        <div className="carousel">
+          {posts.map((post) => (
+            <CarouselCard key={post.id} postId={post.id} />
+          ))}
+        </div>
+      </div>
+      <div className="splash-cta-group">
+        <div className="splash-cta">
+          <h1>Weavewire</h1>
+          <p>ermmmmm make an account, stinky</p>
+        </div>
+        <div className="splash-login card">
+          <h2>Login</h2>
+          <form onSubmit={handleLogin}>
+            <div className="input-group">
+              <label htmlFor="email">Email</label>
+              <div className="input">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.currentTarget.value)}
+                />
+              </div>
+            </div>
+            <div className="input-group">
+              <label htmlFor="password">Password</label>
+              <div className="input">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.currentTarget.value)}
+                />
+              </div>
+            </div>
+            <div className="login-signup-group">
+              <button type="submit" className="register-cta">
+                Don't have an account yet?
+              </button>
+              <button type="submit">Login</button>
+            </div>
+            <button type="button" className="demo-login" onClick={demoLogin}>
+              Login as Demo User
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  );
 }
