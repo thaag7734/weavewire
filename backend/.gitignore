@@ -1,8 +1,10 @@
 /.phpunit.cache
 /node_modules
-/public/build
-/public/hot
-/public/storage
+/public/*
+!/public/.htaccess
+!/public/robots.txt
+!/public/humans.txt
+!/public/index.php
 /storage/*.key
 /storage/pail
 /vendor

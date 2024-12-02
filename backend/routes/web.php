@@ -1,9 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\File;
 
-Route::get('/', function () {
-    return ['Laravel' => app()->version()];
-});
+Route::get('/{any}', function () {
+    return File::get(public_path('index.html'));
+})->where('any', '.*');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

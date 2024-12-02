@@ -40,7 +40,6 @@ export const register = createAppAsyncThunk(
     });
 
     const data = await res.json();
-    console.log("register data ==>", data);
 
     if (!res.ok) {
       return rejectWithValue(data);

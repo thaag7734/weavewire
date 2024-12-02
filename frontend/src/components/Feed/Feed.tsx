@@ -5,10 +5,12 @@ import PostCard from "./PostCard";
 import "./Feed.css";
 import Comments from "../Comments/Comments";
 
-export default function Feed({
+export default function Feed(
+  /*{
   subfeed = false,
   popular = false,
-}: { subfeed: boolean; popular: boolean }) {
+}: { subfeed: boolean; popular: boolean }*/
+) {
   const posts = useAppSelector((state) => selectOrderedPosts(state));
   const dispatch = useAppDispatch();
   const [currentPostId, setCurrentPostId] = useState<number | null>(null);

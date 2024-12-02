@@ -53,7 +53,7 @@ function App() {
           element: (
             <div className="triple-pane">
               <Sidebar />
-              <Feed subfeed={false} popular={false} />
+              <Feed />
             </div>
           ),
         },

@@ -44,7 +44,6 @@ export default function SplashPage() {
       : login({ email, password });
 
     dispatch(thunk).then((action) => {
-      console.log(action);
       if (
         ["session/login/rejected", "session/register/rejected"].includes(
           action.type,
