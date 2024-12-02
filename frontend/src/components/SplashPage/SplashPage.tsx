@@ -4,14 +4,21 @@ import { useAppDispatch, useAppSelector } from "../../redux/util";
 import { getRecentPosts, selectOrderedPosts } from "../../redux/reducers/posts";
 import CarouselCard from "./CarouselCard";
 import "./SplashPage.css";
-import { login, restoreUser } from "../../redux/reducers/session";
+import { login, register, restoreUser } from "../../redux/reducers/session";
 import { useNavigate } from "react-router-dom";
+import ErrorMessage from "../ErrorMessage/ErrorMessage";
 
 export default function SplashPage() {
   const posts = useAppSelector((state) => selectOrderedPosts(state));
   const user = useAppSelector((state) => state.session.user);
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSignupForm, setIsSignupForm] = useState(false);
+  const [errors, setErrors] = useState<
+    Record<string, ReturnType<typeof ErrorMessage>[]>
+  >({});
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -27,7 +34,32 @@ export default function SplashPage() {
   const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
 
-    dispatch(login({ email, password }));
+    const thunk = isSignupForm
+      ? register({
+        username,
+        email,
+        password,
+        password_confirmation: confirmPassword,
+      })
+      : login({ email, password });
+
+    dispatch(thunk).then((action) => {
+      console.log(action);
+      if (
+        ["session/login/rejected", "session/register/rejected"].includes(
+          action.type,
+        )
+      ) {
+        const errors: Record<string, ReturnType<typeof ErrorMessage>[]> = {};
+
+        for (const [k, v] of Object.entries(
+          action.payload as Record<string, string[]>,
+        )) {
+          errors[k] = v.map((msg) => <ErrorMessage key={msg} msg={msg} />);
+        }
+        setErrors(errors);
+      }
+    });
   };
 
   const handleAnimEnd = (e: React.AnimationEvent) => {
@@ -38,6 +70,14 @@ export default function SplashPage() {
 
   const demoLogin = () => {
     dispatch(login({ email: "demo@tylerhaag.dev", password: "password" }));
+  };
+
+  const toggleSignup = (e: React.MouseEvent) => {
+    // if i don't put these here it tries to submit the form and only god knows why
+    e.preventDefault();
+    e.stopPropagation();
+
+    setIsSignupForm((prev) => !prev);
   };
 
   return (
@@ -60,33 +100,79 @@ export default function SplashPage() {
           <p>ermmmmm make an account, stinky</p>
         </div>
         <div className="splash-login card">
-          <h2>Login</h2>
+          <h2>{isSignupForm ? "Register" : "Login"}</h2>
           <form onSubmit={handleLogin}>
+            {isSignupForm ? (
+              <>
+                {errors.username}
+                <div className="input-group">
+                  <label htmlFor="username">Username</label>
+                  <div className="input">
+                    <input
+                      name="username"
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.currentTarget.value)}
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
+            {errors.email}
             <div className="input-group">
               <label htmlFor="email">Email</label>
               <div className="input">
                 <input
+                  name="email"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.currentTarget.value)}
                 />
               </div>
             </div>
+            {errors.password}
             <div className="input-group">
               <label htmlFor="password">Password</label>
               <div className="input">
                 <input
+                  name="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.currentTarget.value)}
                 />
               </div>
             </div>
+            {isSignupForm ? (
+              <>
+                {errors.confirmPassword ?? errors.password_confirmation}
+                <div className="input-group">
+                  <label htmlFor="confirm-password">Password</label>
+                  <div className="input">
+                    <input
+                      name="confirm-password"
+                      type="password"
+                      value={confirmPassword}
+                      onChange={(e) =>
+                        setConfirmPassword(e.currentTarget.value)
+                      }
+                    />
+                  </div>
+                </div>
+              </>
+            ) : null}
             <div className="login-signup-group">
-              <button type="submit" className="register-cta">
-                Don't have an account yet?
+              <button
+                type="submit"
+                className="register-cta"
+                onClick={toggleSignup}
+              >
+                {isSignupForm
+                  ? "Already have an account?"
+                  : "Don't have an account yet?"}
               </button>
-              <button type="submit">Login</button>
+              <button type="submit">
+                {isSignupForm ? "Register" : "Login"}
+              </button>
             </div>
             <button type="button" className="demo-login" onClick={demoLogin}>
               Login as Demo User

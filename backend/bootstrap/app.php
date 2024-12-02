@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,5 +28,9 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json([
                 'message' => 'You must be logged in to access this endpoint'
             ], 401);
+        });
+
+        $exceptions->render(function (ValidationException $e, Request $request) {
+            return response()->json($e->errors(), 400);
         });
     })->create();

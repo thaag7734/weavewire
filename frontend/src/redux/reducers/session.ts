@@ -2,11 +2,12 @@ import { createSlice, isAnyOf, type PayloadAction } from "@reduxjs/toolkit";
 import type { User } from "../../types/Models";
 import { csrfFetch } from "../../util/csrfFetch";
 import { createAppAsyncThunk } from "../util";
-import type { LoginForm } from "../../types/Forms";
+import type { LoginForm, SignupForm } from "../../types/Forms";
 
 const PREFIX = "session";
 
 const LOGIN = `${PREFIX}/login`;
+const REGISTER = `${PREFIX}/register`;
 const LOGOUT = `${PREFIX}/logout`;
 const RESTORE_USER = `${PREFIX}/restoreUser`;
 
@@ -29,9 +30,29 @@ export const login = createAppAsyncThunk(
   },
 );
 
+export const register = createAppAsyncThunk(
+  REGISTER,
+  async (form: SignupForm, { fulfillWithValue, rejectWithValue }) => {
+    const res = await csrfFetch("/auth/register", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const data = await res.json();
+    console.log("register data ==>", data);
+
+    if (!res.ok) {
+      return rejectWithValue(data);
+    }
+
+    return fulfillWithValue(data);
+  },
+);
+
 export const logout = createAppAsyncThunk(
   LOGOUT,
-  async (_: never, { fulfillWithValue, rejectWithValue }) => {
+  async (_, { fulfillWithValue, rejectWithValue }) => {
     const res = await csrfFetch("/auth/logout", { method: "POST" });
 
     if (!res.ok) {
@@ -74,7 +95,12 @@ export const sessionSlice = createSlice({
       state.user = null;
     });
     builder.addMatcher(
-      (action) => isAnyOf(login.fulfilled, restoreUser.fulfilled)(action),
+      (action) =>
+        isAnyOf(
+          login.fulfilled,
+          register.fulfilled,
+          restoreUser.fulfilled,
+        )(action),
       (state, action: PayloadAction<User>) => {
         state.user = action.payload;
       },
