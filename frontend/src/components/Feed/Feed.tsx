@@ -44,7 +44,7 @@ export default function Feed(
     }
 
     return () => observer?.disconnect();
-  }, [cards]);
+  });
 
   useEffect(() => {
     //console.log(
