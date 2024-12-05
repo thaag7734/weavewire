@@ -42,7 +42,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'caption' => 'required|string|max:512',
+            'caption' => 'nullable|string|max:512',
             'image' => 'required|mimes:apng,avif,gif,jpeg,png,webp',
         ]);
 
@@ -55,7 +55,7 @@ class PostController extends Controller
 
         $post = Post::create([
             'author_id' => $request->user()->id,
-            'caption' => $validated['caption'],
+            'caption' => $validated['caption'] ?? '',
             'image_file' => $imageFilename,
         ]);
 
@@ -74,7 +74,7 @@ class PostController extends Controller
     public function update(Request $request, int $postId)
     {
         $validated = $request->validate([
-            'caption' => 'required|string|max:512',
+            'caption' => 'nullable|string|max:512',
         ]);
 
         /** @var \App\Models\User $user */
@@ -103,7 +103,7 @@ class PostController extends Controller
 
         try {
             $post->update([
-                'caption' => $validated['caption'],
+                'caption' => $validated['caption'] ?? '',
             ]);
 
             return response()->json($post);
