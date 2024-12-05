@@ -63,14 +63,24 @@ export default function PostCreator() {
     ];
 
     if (e.currentTarget.files?.[0]) {
-      const fileExt = e.currentTarget.files[0].name.split(".").slice(-1)[0];
+      const file = e.currentTarget.files[0];
+      const fileExt = file.name.split(".").slice(-1)[0];
+
       if (!supportedExtensions.includes(fileExt)) {
         e.preventDefault();
         setError(<ErrorMessage msg={"File must be an image"} />);
         return;
       }
-      setImage(e.currentTarget.files[0]);
-      setPreviewURL(URL.createObjectURL(e.currentTarget.files[0]));
+
+      //               15 MiB
+      if (file.size > 15728640) {
+        e.preventDefault();
+        setError(<ErrorMessage msg={"File must be smaller than 15MB"} />);
+        return;
+      }
+
+      setImage(file);
+      setPreviewURL(URL.createObjectURL(file));
     }
   };
 
