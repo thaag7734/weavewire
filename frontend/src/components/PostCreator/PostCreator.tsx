@@ -90,6 +90,7 @@ export default function PostCreator() {
     // @ts-ignore once again, the image is not and cannot be null
     const data = await dispatch(thunk);
 
+    // TODO properly type API responses and implement toasts so this isn't necessary
     // @ts-ignore
     if (data.payload.message) {
       // @ts-ignore

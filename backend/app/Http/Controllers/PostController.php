@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -41,10 +42,22 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $validator = Validator::make($request->all(), [
             'caption' => 'nullable|string|max:512',
-            'image' => 'required|mimes:apng,avif,gif,jpeg,png,webp',
+            'image' => 'required|file|mimes:apng,avif,gif,jpeg,png,webp|max:15360',
+        ], [
+            'image.max' => 'Image must be smaller than 15MB'
         ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                // TODO this is not a permanent solution, fix when implementing toasts
+                'message' => implode(
+                    $validator->errors()->get('image')
+                        ?? $validator->errors()->get('caption')
+                )
+            ]);
+        }
 
         $path = $request->file('image')->store('images', 's3');
         if (!$path) {
