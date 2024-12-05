@@ -154,6 +154,11 @@ export const postsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(deletePost.fulfilled, (state, action) => {
       delete state.posts[action.payload.postId];
+
+      const orderIdx = state.order.indexOf(action.payload.postId);
+      if (orderIdx >= 0) {
+        delete state.order[orderIdx];
+      }
     });
     builder
       .addMatcher(

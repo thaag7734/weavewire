@@ -58,7 +58,7 @@ export default function Feed(
 
     if (
       fetchDebounce ||
-      posts.findIndex((p) => p.id === currentPostId) < posts.length - 5
+      posts.findIndex((p) => p?.id === currentPostId) < posts.length - 5
     ) {
       return;
     }
