@@ -15,7 +15,8 @@ import { restoreUser } from "./redux/reducers/session";
 import PostCreator from "./components/PostCreator/PostCreator";
 
 if (import.meta.env.MODE !== "production") {
-	(window as any).csrfFetch = csrfFetch;
+	(window as typeof window & { csrfFetch: typeof csrfFetch }).csrfFetch =
+		csrfFetch;
 }
 
 function App() {

@@ -36,7 +36,7 @@ export default function Feed(
 
     observer = new IntersectionObserver(handleIntersect, {
       root: document.querySelector("div.feed"),
-      threshold: 1.0,
+      threshold: 0.9,
     });
 
     for (const card of cards.current) {
