@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use League\Flysystem\UnableToCheckExistence;
 
 class PostController extends Controller
 {
@@ -165,14 +166,20 @@ class PostController extends Controller
         $s3 = Storage::disk('s3');
 
         try {
+            $post->delete();
+
             if ($s3->exists($imageFile)) {
                 $s3->delete($imageFile);
             }
 
-            $post->delete();
-
             return response()->json(['message' => 'Post deleted successfully'], 200);
         } catch (\Exception $e) {
+            // TODO temporary fix for deletion failing in production for no reason
+            if ($e instanceof UnableToCheckExistence) {
+                return response()->json([
+                    'message' => 'Post deleted successfully, failed to delete image',
+                ], 200);
+            }
 
             return response()->json([
                 'message' => 'An error occurred while deleting the post',
