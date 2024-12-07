@@ -60,6 +60,8 @@ class PostController extends Controller
             ]);
         }
 
+        $validated = $validator->validate();
+
         $path = $request->file('image')->store('images', 's3');
         if (!$path) {
             return response()->json(['message' => 'Image upload failed'], 500);
