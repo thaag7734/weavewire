@@ -6,6 +6,7 @@ import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import {
   createPost,
   getPost,
+  getRecentPosts,
   selectPostById,
   updatePost,
 } from "../../redux/reducers/posts";
@@ -106,6 +107,7 @@ export default function PostCreator() {
       // @ts-ignore
       setError(<ErrorMessage msg={data.payload.message} />);
     } else {
+      dispatch(getRecentPosts()).then(() => navigate("/feed"));
       navigate("/feed");
     }
   };

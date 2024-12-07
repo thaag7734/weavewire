@@ -43,7 +43,7 @@ const PostCard = forwardRef<HTMLDivElement, { postId: number }>(
               <div className="pfp">
                 <img
                   alt=""
-                  src={`${AVATAR_URL}/${post.author!.avatar || "nopfp.png"}`}
+                  src={`${AVATAR_URL}/${post.author?.avatar || "nopfp.png"}`}
                 />
               </div>
               <button

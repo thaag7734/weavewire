@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -66,6 +67,7 @@ class PostController extends Controller
 
         $imageFilename = explode('/', $path)[1];
 
+        /** @var \App\Models\Post $post */
         $post = Post::create([
             'author_id' => $request->user()->id,
             'caption' => $validated['caption'] ?? '',
@@ -73,7 +75,13 @@ class PostController extends Controller
         ]);
 
         if ($post) {
-            return response()->json($post, 201);
+            $postArr = $post->toArray();
+
+            $author = User::query()->find($post->author_id)->toArray();
+            unset($author['email'], $author['email_verified_at'], $author['updated_at']);
+            $postArr['author'] = $author;
+
+            return response()->json($postArr, 201);
         } else {
             return response()->json(['message' => 'Failed to create post'], 500);
         }
@@ -163,6 +171,7 @@ class PostController extends Controller
 
             return response()->json(['message' => 'Post deleted successfully'], 200);
         } catch (\Exception $e) {
+
             return response()->json([
                 'message' => 'An error occurred while deleting the post',
             ], 500);

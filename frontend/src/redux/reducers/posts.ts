@@ -170,13 +170,14 @@ export const postsSlice = createSlice({
           )(action),
         (state, action: PayloadAction<Post>) => {
           state.posts[action.payload.id] = action.payload;
+          state.order = [action.payload.id].concat(state.order);
         },
       )
       .addMatcher(
         (action) => isAnyOf(getRecentPosts.fulfilled)(action),
         (state, action: PayloadAction<{ posts: Post[] }>) => {
           for (const post of action.payload.posts) {
-            if (state.order.includes(post.id)) return;
+            if (state.order.includes(post.id)) continue;
 
             state.posts[post.id] = post;
             state.order.push(post.id);
